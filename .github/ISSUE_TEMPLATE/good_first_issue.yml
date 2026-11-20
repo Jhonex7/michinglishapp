@@ -1,0 +1,24 @@
+name: Good first issue (code task)
+description: A small code task a student can take as their contribution.
+labels: ["good first issue"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What should change in the app?
+    validations:
+      required: true
+  - type: textarea
+    id: hints
+    attributes:
+      label: Where to start
+      description: Files, components or functions involved.
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of done
+      value: |
+        - [ ] Feature works in `npm run dev`
+        - [ ] Tests added in `src/__tests__/`
+        - [ ] `npm run ci` passes

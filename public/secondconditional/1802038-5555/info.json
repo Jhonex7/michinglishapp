@@ -1,0 +1,45 @@
+{
+  "user": {
+    "username": "Fredy Ball",
+    "profileImage": "https://github.com/fredyunivalle.png",
+    "socialNetwork": "github",
+    "socialLink": "@fredyunivalle"
+  },
+  "topics": [
+    {
+      "topic": "second conditional",
+      "questions": [
+        {
+          "question": "If I _____ a million dollars, I would travel around the world.",
+          "options": ["have", "had", "will have", "would have"],
+          "answer": "had"
+        },
+        {
+          "question": "If she spoke English better, she _____ that job.",
+          "options": ["gets", "will get", "would get", "got"],
+          "answer": "would get"
+        },
+        {
+          "question": "Which sentence is a correct second conditional?",
+          "options": [
+            "If I were you, I would study more.",
+            "If I am you, I would study more.",
+            "If I were you, I will study more.",
+            "If I was you, I study more."
+          ],
+          "answer": "If I were you, I would study more."
+        },
+        {
+          "question": "What would you do if you _____ invisible for a day?",
+          "options": ["are", "were", "will be", "have been"],
+          "answer": "were"
+        },
+        {
+          "question": "If cats _____ talk, they would complain about Mondays too.",
+          "options": ["can", "could", "will", "would"],
+          "answer": "could"
+        }
+      ]
+    }
+  ]
+}

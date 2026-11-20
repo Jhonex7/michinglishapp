@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+/// <reference types="vitest" />
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/michinglishapp/',
@@ -62,4 +63,15 @@ export default defineConfig({
       }
     })
   ],
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    include: ['src/**/*.test.{js,jsx}'],
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.{js,jsx}'],
+      exclude: ['src/main.jsx', 'src/test/**', 'src/**/*.test.{js,jsx}'],
+      reporter: ['text-summary', 'html'],
+    },
+  },
 })
