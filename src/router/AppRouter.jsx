@@ -1,41 +1,21 @@
-import { Route, Routes } from 'react-router-dom';
-import AdjectivesModule from '../components/modules/AdjectivesModule';
-import VocabularyModule from '../components/modules/VocabularyModule';
-import VerbsModule from '../components/modules/VerbsModule';
-import AdverbsModule from '../components/modules/AdverbsModule';
-import LinkingWordsModule from '../components/modules/LinkingWordsModule';
-import CheckKnowledge from '../components/modules/CheckKnowledge';
-import ModalsPossibilityModule from '../components/modules/ModalsPossibility';
-import ModalsDeductionModule from '../components/modules/ModalsDeduction';
-import ZeroConditionalModule from '../components/modules/ZeroConditional';
-import FirstConditionalModule from '../components/modules/FirstConditional';
-import SecondConditionalModule from '../components/modules/SecondConditional';
-import ThirdConditionalModule from '../components/modules/ThirdConditional';
-import MixedConditionalModule from '../components/modules/MixedConditional';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { QUIZ_TOPICS } from '../config/topics';
+import HomePage from '../pages/HomePage';
+import QuizPage from '../pages/QuizPage';
 import VocabularyPuzzlePage from '../pages/VocabularyPuzzlePage';
+import ContributorsPage from '../pages/ContributorsPage';
+import ContributePage from '../pages/ContributePage';
 
-
-export const AppRouter = () => { 
-
-    return (
-        <Routes>            
-          <Route path="/michinglishapp/testknowledge" element={<CheckKnowledge/>} />
-          <Route path="/michinglishapp/verbs" element={<VerbsModule/>} />
-          <Route path="/michinglishapp/adjectives" element={<AdjectivesModule/>} />
-          <Route path="/michinglishapp/vocabulary" element={<VocabularyModule/>} />
-          <Route path="/michinglishapp/linking-words" element={<LinkingWordsModule/>} />
-          <Route path="/michinglishapp/adverbs" element={<AdverbsModule/>} />
-          <Route path="/michinglishapp/modals-of-possibility" element={<ModalsPossibilityModule/>} />     
-          <Route path="/michinglishapp/modals-of-deduction" element={<ModalsDeductionModule/>} />
-          <Route path="/michinglishapp/zero-conditionals" element={<ZeroConditionalModule/>} />
-          <Route path="/michinglishapp/first-conditionals" element={<FirstConditionalModule/>} />
-          <Route path="/michinglishapp/second-conditionals" element={<SecondConditionalModule/>} />
-          <Route path="/michinglishapp/third-conditionals" element={<ThirdConditionalModule/>} />
-          <Route path="/michinglishapp/mixed_conditionals" element={<MixedConditionalModule/>} />
-              {/* Ruta dinámica para puzzles */}
-          <Route path="/michinglishapp/vocabularypuzzel/:category" element={<VocabularyPuzzlePage />} />
-          
-        </Routes>
-    )
-
-}
+// Paths are relative to the router basename (/michinglishapp).
+export const AppRouter = () => (
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    {QUIZ_TOPICS.map((topic) => (
+      <Route key={topic.id} path={`/${topic.path}`} element={<QuizPage topic={topic} />} />
+    ))}
+    <Route path="/vocabularypuzzel/:category" element={<VocabularyPuzzlePage />} />
+    <Route path="/contributors" element={<ContributorsPage />} />
+    <Route path="/contribute" element={<ContributePage />} />
+    <Route path="*" element={<Navigate to="/" replace />} />
+  </Routes>
+);

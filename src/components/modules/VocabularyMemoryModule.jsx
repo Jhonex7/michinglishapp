@@ -1,6 +1,7 @@
 import {useCallback ,useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Container, Row, Col, Card, Button, Alert, Image } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Alert } from 'react-bootstrap';
+import ContributorCard from '../Contributor/ContributorCard';
 import './MemoryMatchGame.css';
 
 
@@ -13,7 +14,7 @@ const generateCards = (pairs) => {
   return flat.sort(() => Math.random() - 0.5);
 };
 
-const MemoryMatchGame = ({ user, vocabPairs }) => {
+const MemoryMatchGame = ({ contributor, vocabPairs }) => {
   const [cards, setCards] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
@@ -65,15 +66,8 @@ const MemoryMatchGame = ({ user, vocabPairs }) => {
 
   return (
     <Container className="mt-4">
-      <div className="text-center mb-4">
-        <Image
-          src={user.profileImage}
-          alt={user.username}
-          roundedCircle
-          style={{ width: '80px', height: '80px', objectFit: 'cover' }}
-        />
-        <h5 className="mt-2">{user.username}</h5>
-        <div className="text-muted">{user.socialLink}</div>
+      <div className="d-flex justify-content-center mb-4">
+        <ContributorCard contributor={contributor} label="Puzzle by" variant="stacked" />
       </div>
 
       <h2 className="text-center mb-4">🧠 Match the Vocabulary</h2>

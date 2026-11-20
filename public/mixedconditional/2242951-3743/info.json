@@ -2,6 +2,7 @@
   "user": {
     "username": "Alejandro Muñoz",
     "profileImage": "https://i0.wp.com/planetamascotaperu.com/wp-content/uploads/2023/09/persa_blanco_crop1635633155395.jpeg_423682103.webp?fit=1200%2C1200&ssl=1",
+    "socialNetwork": "other",
     "socialLink": "@alejandro.mg1"
   },
   "topics": [
@@ -24,7 +25,7 @@
             "didn't eat / would have",
             "hadn't eaten / would have",
             "hadn't eaten / would have had",
-            "hadn't eaten / would have"
+            "hadn't eat / would had"
           ],
           "answer": "hadn't eaten / would have"
         },
