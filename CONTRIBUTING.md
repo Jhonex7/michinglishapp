@@ -163,6 +163,10 @@ See the [README](README.md) for the fork + group branch flow. In short:
 your branch  ──PR──▶  feature/GroupN (your fork)  ──PR──▶  develop (professor)  ──▶  main (deploy)
 ```
 
+Only **develop** accepts pull requests from your branches or forks. Pull
+requests to **main** are only accepted from `develop` (the *Branch policy /
+PR source* check fails otherwise).
+
 Every PR runs the **CI** pipeline:
 
 | Check | What it verifies |
