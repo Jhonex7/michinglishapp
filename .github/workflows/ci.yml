@@ -19,7 +19,14 @@ concurrency:
 jobs:
   contribution:
     name: Contribution check
-    if: github.event_name == 'pull_request'
+    # Student content is validated when it enters develop. Promoting develop
+    # to main only carries content that was already checked, so skip it there
+    # (a skipped job still counts as passing for required status checks).
+    if: >-
+      github.event_name == 'pull_request' &&
+      !(github.base_ref == 'main' &&
+        github.head_ref == 'develop' &&
+        github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
