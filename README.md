@@ -57,6 +57,8 @@ Every PR runs `.github/workflows/ci.yml`:
 
 Run them all locally with `npm run ci` and `npm run check:contribution`.
 
+**Branch policy** (`.github/workflows/branch-policy.yml`): PRs to `main` are only accepted from `develop` of this repository. Always target `develop`.
+
 ---
 
 ## 5) Folder & file structure for Vocabulary Puzzle
