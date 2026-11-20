@@ -47,6 +47,9 @@ You can also open the **Contribute** page of the app: it builds your `user`
 block, shows a preview of how you will appear, and checks your file with the
 same rules as the pipeline.
 
+**Games** (`--topic`): `sentencebuilder` (Sentence Builder), `errorhunter`
+(Error Hunter).
+
 **Quiz topics** (`--topic`): `data` (Check your knowledge), `verbs`,
 `adjectives`, `adverbs`, `linkwords`, `modalspossibility`, `modalsdeduction`,
 `zeroconditional`, `firstconditional`, `secondconditional`, `thirdconditional`,
@@ -79,6 +82,51 @@ Full example: [`public/secondconditional/1802038-5555/info.json`](public/secondc
 }
 ```
 
+### Sentence Builder `info.json`
+
+The player sees your sentence with the words shuffled and taps them in order.
+Full example: [`public/sentencebuilder/1802038-5555/info.json`](public/sentencebuilder/1802038-5555/info.json)
+
+```json
+{
+  "user": { "username": "Ana Gómez", "profileImage": "https://…", "socialNetwork": "instagram", "socialLink": "@ana_gomez" },
+  "sentences": [
+    { "sentence": "If it rains, we will stay at home.", "hint": "First conditional" },
+    { "sentence": "I have never been to London." }
+  ]
+}
+```
+
+- 4 to 15 words, starting with a capital letter and ending with `.` `?` or `!`
+- `hint` is optional (tense, topic…)
+- Avoid sentences with more than one correct order ("Yesterday I went…" /
+  "I went … yesterday"): only your exact order is accepted.
+
+### Error Hunter `info.json`
+
+The player sees a sentence with **one** mistake and taps it. Then the app shows
+the corrected sentence and your explanation.
+Full example: [`public/errorhunter/1802038-5555/info.json`](public/errorhunter/1802038-5555/info.json)
+
+```json
+{
+  "user": { "username": "Ana Gómez", "profileImage": "https://…", "socialNetwork": "tiktok", "socialLink": "@ana_gomez" },
+  "errors": [
+    {
+      "sentence": "She don't like coffee in the morning.",
+      "wrong": "don't",
+      "correct": "doesn't",
+      "explanation": "With he, she and it we use doesn't in the present simple."
+    }
+  ]
+}
+```
+
+- `wrong` must appear **exactly once** in the sentence, as whole word(s). It
+  can be two words: `"wrong": "more taller"`.
+- `correct` replaces `wrong`; `explanation` is one short sentence.
+- 3 to 25 words, starting with a capital letter and ending with `.` `?` or `!`
+
 ### Vocabulary puzzle `info.json`
 
 ```json
@@ -103,7 +151,7 @@ Full example: [`public/secondconditional/1802038-5555/info.json`](public/secondc
 | `user.profileImage` | an `https://` image URL. Tip: `https://github.com/<your-user>.png` |
 | `user.socialNetwork` | one of `instagram`, `tiktok`, `x`, `facebook`, `linkedin`, `github`, `youtube`, `threads`, `twitch`, `discord`, `other` |
 | `user.socialLink` | your handle on that network, e.g. `@ana_gomez` |
-| questions | at least **3** per file, each with exactly **4 different** options |
+| questions / sentences | at least **3** per file. Quiz questions need exactly **4 different** options |
 | `answer` | must be **exactly** one of the options (same spelling and capitals) |
 | originality | no question repeated in your file or copied from a classmate |
 | vocabulary | exactly **4** pairs, unique `id`s, `en` and `es` not empty |
@@ -134,13 +182,16 @@ npm run ci     # lint + tests + build
 
 | Path | What lives there |
 |---|---|
-| `src/config/topics.js` | **the list of quiz topics**: add one entry here to create a new topic |
+| `src/config/topics.js` | **the list of topics** (quizzes and games): add one entry here to create a new topic |
+| `src/config/contentTypes.js` | each kind of activity (quiz, sentence-builder, error-hunter, vocabulary): its rules, counting and template |
+| `src/games/sentenceTools.js` | word helpers shared by the games and the validation |
+| `src/components/Games/` | `RoundGame` (shared round/score frame), `SentenceBuilderItem`, `ErrorHunterItem` |
 | `src/config/socialNetworks.js` | allowed social networks and how profile links are built |
 | `src/validation/contentRules.js` | the rules for `info.json` (used by tests, the pipeline and the Contribute page) |
 | `src/components/Quiz/QuizCard.jsx` | the quiz game |
 | `src/components/Contributor/ContributorCard.jsx` | how a student is credited (name, code, social) |
 | `src/components/modules/VocabularyMemoryModule.jsx` | the memory puzzle game |
-| `src/pages/` | Home, Quiz, Contributors, Contribute, Vocabulary puzzle |
+| `src/pages/` | Home, Activity (plays any topic), Contributors, Contribute, Vocabulary puzzle |
 | `src/store/` | Redux: quiz topics load on demand, vocabulary at startup |
 | `scripts/` | `check-contribution.mjs` (PR check) and `new-contribution.mjs` (scaffolder) |
 
@@ -154,6 +205,8 @@ npm run ci     # lint + tests + build
 - Save the best score per topic in `localStorage`.
 - Make the memory game show which pairs were wrong at the end.
 - Add a new topic (e.g. *Passive Voice*, *Reported Speech*) with 5 sample questions.
+- Add a new game type: an entry in `contentTypes.js`, an item component for
+  `RoundGame` and a topic in `topics.js` (see Sentence Builder as a model).
 
 ## 4. Pull request flow
 
@@ -178,16 +231,3 @@ Every PR runs the **CI** pipeline:
 
 A red check means the PR cannot be merged. Open the failed job: the message
 says which file and which rule to fix.
-
-## 5. How your contribution is evaluated
-
-| Criterion | Weight |
-|---|---|
-| Pipeline is green on the first or second try | 20% |
-| Quality of English and of the questions (clear, one correct answer, plausible distractors) | 30% |
-| Originality (not copied, not trivial) | 20% |
-| Git hygiene: branch name, small commits with `feat:` / `fix:` / `docs:` prefixes, PR template filled | 15% |
-| Review: you reviewed at least one classmate's PR with useful comments | 15% |
-
-Code contributions are evaluated on: the issue is solved, tests included,
-readable code, and no unrelated changes.

@@ -23,16 +23,16 @@ export const listSubfolders = (dir) =>
     ? fs.readdirSync(dir).filter((name) => fs.statSync(path.join(dir, name)).isDirectory())
     : [];
 
-/** Every place that holds student folders, with the kind of content inside. */
+/** Every place that holds student folders, with the content type inside. */
 export const listContentSections = () => [
   ...QUIZ_TOPICS.map((topic) => ({
-    kind: 'quiz',
+    type: topic.type,
     name: topic.folder,
     title: topic.title,
     dir: path.join(PUBLIC_DIR, topic.folder),
   })),
   ...listVocabularyCategories().map((category) => ({
-    kind: 'vocabulary',
+    type: 'vocabulary',
     name: `vocabulary/${category}`,
     title: `Vocabulary puzzle: ${category}`,
     dir: path.join(VOCABULARY_DIR, category),

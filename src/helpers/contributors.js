@@ -1,4 +1,5 @@
-import { resolveSocialProfile } from '../config/socialNetworks';
+import { resolveSocialProfile } from '../config/socialNetworks.js';
+import { getContentType } from '../config/contentTypes.js';
 
 const isSafeImageUrl = (value) =>
   typeof value === 'string' && /^https:\/\/[^\s"'<>]+$/i.test(value.trim());
@@ -18,16 +19,20 @@ export const toContributor = (user = {}, studentCode = '') => {
 };
 
 /**
- * Flattens [{ studentCode, user, topics: [{ questions }] }] into a list of
- * questions, each one carrying the contributor who wrote it.
+ * Flattens the student entries of a topic into a list of playable items
+ * (questions, sentences…), each one carrying the contributor who wrote it.
+ * type: 'quiz' | 'sentence-builder' | 'error-hunter' (see contentTypes.js)
  */
-export const extractQuestionsWithContributor = (entries = []) =>
-  entries.flatMap(({ user, topics = [], studentCode }) => {
-    const contributor = toContributor(user, studentCode);
-    return topics.flatMap(({ questions = [] }) =>
-      questions.map((question) => ({ ...question, contributor })),
-    );
+export const extractItemsWithContributor = (entries = [], type = 'quiz') => {
+  const { listItems } = getContentType(type);
+  return entries.flatMap((entry) => {
+    const contributor = toContributor(entry.user, entry.studentCode);
+    return listItems(entry).map((item) => ({ ...item, contributor }));
   });
+};
+
+/** Quiz questions with their author (kept for readability in quiz code). */
+export const extractQuestionsWithContributor = (entries = []) => extractItemsWithContributor(entries, 'quiz');
 
 /**
  * Aggregates every student across quiz topics and vocabulary puzzles.
@@ -48,11 +53,9 @@ export const buildContributorDirectory = (quizData = {}, vocabularyData = {}, to
   };
 
   Object.entries(quizData).forEach(([topicId, entries]) => {
-    const label = topics.find((t) => t.id === topicId)?.title || topicId;
-    (entries || []).forEach((entry) => {
-      const count = (entry.topics || []).reduce((n, t) => n + (t.questions?.length || 0), 0);
-      add(entry, label, count);
-    });
+    const topic = topics.find((t) => t.id === topicId);
+    const { listItems } = getContentType(topic?.type);
+    (entries || []).forEach((entry) => add(entry, topic?.title || topicId, listItems(entry).length));
   });
 
   Object.entries(vocabularyData).forEach(([category, entries]) => {

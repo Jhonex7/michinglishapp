@@ -4,6 +4,7 @@ import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 import { QUIZ_TOPICS, TOPIC_GROUPS } from '../../config/topics.js';
 import { PUBLIC_DIR } from '../../validation/contentFiles.js';
+import { CONTENT_TYPES } from '../../config/contentTypes.js';
 
 describe('topic registry (src/config/topics.js)', () => {
   test.each(['id', 'folder', 'path'])('every topic has a unique %s', (key) => {
@@ -15,6 +16,8 @@ describe('topic registry (src/config/topics.js)', () => {
     ['title', 'emoji', 'description', 'level'].forEach((key) => expect(topic[key]).toBeTruthy());
     expect(TOPIC_GROUPS.map((g) => g.id)).toContain(topic.group);
     expect(topic.path).toMatch(/^[a-z0-9_-]+$/);
+    expect(Object.keys(CONTENT_TYPES)).toContain(topic.type);
+    expect(topic.type).not.toBe('vocabulary');
   });
 
   test.each(QUIZ_TOPICS.map((t) => [t.folder]))('public/%s/index.json exists', (folder) => {

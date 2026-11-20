@@ -1,18 +1,20 @@
-// Single source of truth for every quiz topic in the app.
+// Single source of truth for every activity (quizzes and games) in the app.
 //
-// To add a new quiz topic:
+// To add a new topic:
 //   1. Create `public/<folder>/index.json` with `{ "folders": [] }`.
-//   2. Add one entry to QUIZ_TOPICS below.
+//   2. Add one entry to QUIZ_TOPICS below. `type` says which game plays it
+//      (see src/config/contentTypes.js); it defaults to "quiz".
 // Routes, sidebar, home page, data loading and tests pick it up automatically.
 
 export const TOPIC_GROUPS = [
   { id: 'general', title: 'General English' },
+  { id: 'games', title: 'Games' },
   { id: 'words', title: 'Words & Grammar' },
   { id: 'modals', title: 'Modal Verbs' },
   { id: 'conditionals', title: 'Conditionals' },
 ];
 
-export const QUIZ_TOPICS = [
+const TOPICS = [
   {
     id: 'data',
     folder: 'data',
@@ -22,6 +24,28 @@ export const QUIZ_TOPICS = [
     group: 'general',
     level: 'A2–B2',
     description: 'A mixed challenge with questions from every classmate.',
+  },
+  {
+    id: 'sentencebuilder',
+    folder: 'sentencebuilder',
+    path: 'sentence-builder',
+    title: 'Sentence Builder',
+    emoji: '🧱',
+    group: 'games',
+    type: 'sentence-builder',
+    level: 'A2–B2',
+    description: 'Put the words in the right order to build the sentence.',
+  },
+  {
+    id: 'errorhunter',
+    folder: 'errorhunter',
+    path: 'error-hunter',
+    title: 'Error Hunter',
+    emoji: '🔍',
+    group: 'games',
+    type: 'error-hunter',
+    level: 'A2–B2',
+    description: 'Every sentence has one mistake. Can you find it?',
   },
   {
     id: 'verbs',
@@ -134,6 +158,8 @@ export const QUIZ_TOPICS = [
     description: 'Mix past and present: if I had slept, I wouldn’t be tired.',
   },
 ];
+
+export const QUIZ_TOPICS = TOPICS.map((topic) => ({ type: 'quiz', ...topic }));
 
 export const getTopicById = (id) => QUIZ_TOPICS.find((topic) => topic.id === id);
 

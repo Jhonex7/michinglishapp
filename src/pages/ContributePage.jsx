@@ -5,7 +5,8 @@ import { QUIZ_TOPICS, formatCategoryName } from '../config/topics';
 import { SOCIAL_NETWORKS } from '../config/socialNetworks';
 import { toContributor } from '../helpers/contributors';
 import { EMPTY_PROFILE, buildFilePath, buildInfoTemplate } from '../helpers/contributionTemplate';
-import { isValidStudentCode, validateQuizInfo, validateVocabularyInfo } from '../validation/contentRules';
+import { isValidStudentCode } from '../validation/contentRules';
+import { detectContentType, getContentType } from '../config/contentTypes';
 import { useSelector } from 'react-redux';
 
 const REPO_URL = 'https://github.com/fredyunivalle/michinglishapp';
@@ -39,8 +40,8 @@ const ContributePage = () => {
     if (!pasted.trim()) return null;
     try {
       const info = JSON.parse(pasted);
-      const validate = Array.isArray(info.words) ? validateVocabularyInfo : validateQuizInfo;
-      return { errors: validate(info, { strict: true }) };
+      const type = detectContentType(info);
+      return { type, errors: getContentType(type).validate(info, { strict: true }) };
     } catch (error) {
       return { errors: [`This is not valid JSON: ${error.message}`] };
     }
@@ -77,7 +78,7 @@ const ContributePage = () => {
                   <Col sm={6}>
                     <Form.Label htmlFor="kind">Type</Form.Label>
                     <Form.Select id="kind" value={profile.kind} onChange={changeKind}>
-                      <option value="quiz">Quiz questions</option>
+                      <option value="quiz">Quizzes &amp; games</option>
                       <option value="vocabulary">Vocabulary puzzle</option>
                     </Form.Select>
                   </Col>
@@ -85,7 +86,11 @@ const ContributePage = () => {
                     <Form.Label htmlFor="topic">Topic</Form.Label>
                     <Form.Select id="topic" value={profile.topic} onChange={update('topic')}>
                       {profile.kind === 'quiz'
-                        ? QUIZ_TOPICS.map((t) => <option key={t.id} value={t.id}>{t.title}</option>)
+                        ? QUIZ_TOPICS.map((t) => (
+                            <option key={t.id} value={t.id}>
+                              {t.title}{t.type !== 'quiz' ? ` (${getContentType(t.type).label})` : ''}
+                            </option>
+                          ))
                         : vocabularyCategories.map((c) => <option key={c} value={c}>{formatCategoryName(c)}</option>)}
                     </Form.Select>
                   </Col>
@@ -147,10 +152,13 @@ const ContributePage = () => {
                 aria-label="Paste your info.json"
               />
               {check && (check.errors.length === 0 ? (
-                <Alert variant="success" className="mt-3 mb-0">✅ Looks great! Ready for your pull request.</Alert>
+                <Alert variant="success" className="mt-3 mb-0">
+                  ✅ Looks great! Valid {getContentType(check.type).label} file, ready for your pull request.
+                </Alert>
               ) : (
                 <Alert variant="danger" className="mt-3 mb-0">
-                  <strong>Fix these {check.errors.length} problems:</strong>
+                  <strong>Fix these {check.errors.length} problems</strong>
+                  {check.type && <span className="small"> ({getContentType(check.type).label} file)</span>}:
                   <ul className="mb-0 small">{check.errors.map((e) => <li key={e}>{e}</li>)}</ul>
                 </Alert>
               ))}

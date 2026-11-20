@@ -14,14 +14,9 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { QUIZ_TOPICS } from '../src/config/topics.js';
+import { getContentType } from '../src/config/contentTypes.js';
 import { resolveSocialProfile } from '../src/config/socialNetworks.js';
-import {
-  findCrossDuplicates,
-  isValidStudentCode,
-  listQuestions,
-  validateQuizInfo,
-  validateVocabularyInfo,
-} from '../src/validation/contentRules.js';
+import { findCrossDuplicates, isValidStudentCode } from '../src/validation/contentRules.js';
 import { REPO_ROOT, listSubfolders, readJson } from '../src/validation/contentFiles.js';
 
 const args = process.argv.slice(2);
@@ -47,29 +42,30 @@ const changedFiles = () => {
   }
 };
 
-const quizFolders = new Set(QUIZ_TOPICS.map((t) => t.folder));
+const topicTypes = new Map(QUIZ_TOPICS.map((t) => [t.folder, t.type]));
 
 // public/<topic>/<code>/info.json  or  public/vocabulary/<category>/<code>/info.json
 const classify = (file) => {
   const parts = file.split('/');
   if (parts[0] !== 'public') return null;
   if (parts[1] === 'vocabulary' && parts.length === 5 && parts[4] === 'info.json') {
-    return { kind: 'vocabulary', section: `vocabulary/${parts[2]}`, code: parts[3] };
+    return { type: 'vocabulary', section: `vocabulary/${parts[2]}`, code: parts[3] };
   }
-  if (quizFolders.has(parts[1]) && parts.length === 4 && parts[3] === 'info.json') {
-    return { kind: 'quiz', section: parts[1], code: parts[2] };
+  if (topicTypes.has(parts[1]) && parts.length === 4 && parts[3] === 'info.json') {
+    return { type: topicTypes.get(parts[1]), section: parts[1], code: parts[2] };
   }
   return null;
 };
 
 const files = changedFiles();
-const contentFiles = files.map((f) => ({ file: f, ...classify(f) })).filter((f) => f.kind);
+const contentFiles = files.map((f) => ({ file: f, ...classify(f) })).filter((f) => f.type);
 const codeFiles = files.filter((f) => !f.startsWith('public/'));
 const problems = [];
 const rows = [];
 
-for (const { file, kind, section, code } of contentFiles) {
+for (const { file, type, section, code } of contentFiles) {
   const errors = [];
+  const contentType = getContentType(type);
   const sectionDir = path.join(REPO_ROOT, 'public', section);
   if (!isValidStudentCode(code)) errors.push(`folder "${code}" must be your student code (1234567-1234)`);
 
@@ -81,15 +77,14 @@ for (const { file, kind, section, code } of contentFiles) {
   if (info.error) {
     errors.push(info.error);
   } else {
-    const validate = kind === 'vocabulary' ? validateVocabularyInfo : validateQuizInfo;
-    errors.push(...validate(info.data, { strict: true }));
+    errors.push(...contentType.validate(info.data, { strict: true }));
 
-    if (kind === 'quiz') {
+    if (type !== 'vocabulary') {
       const others = listSubfolders(sectionDir)
         .filter((f) => f !== code)
         .map((f) => ({ studentCode: f, info: readJson(path.join(sectionDir, f, 'info.json')).data }))
         .filter((e) => e.info);
-      errors.push(...findCrossDuplicates([...others, { studentCode: code, info: info.data }])
+      errors.push(...findCrossDuplicates([...others, { studentCode: code, info: info.data }], contentType)
         .filter((e) => e.includes(`from ${code} `)));
     }
 
@@ -100,7 +95,7 @@ for (const { file, kind, section, code } of contentFiles) {
       code,
       section,
       social: `${social.label} @${social.handle}`,
-      items: kind === 'vocabulary' ? info.data.words?.length || 0 : listQuestions(info.data).length,
+      items: `${contentType.listItems(info.data).length} ${contentType.itemName}`,
       ok: errors.length === 0,
     });
   }
