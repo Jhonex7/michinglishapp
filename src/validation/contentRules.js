@@ -195,26 +195,16 @@ export const validateVocabularyInfo = (info, { strict = false } = {}) => {
 };
 
 /**
- * Checks that index.json and the student folders on disk agree.
- * indexFolders: names listed in index.json; diskFolders: directories found.
+ * Checks the student folders of a section: names must be student codes and
+ * each folder needs an info.json. (index.json files are generated, see
+ * src/validation/contentIndex.js.)
+ * folders: [{ name, hasInfo }]
  */
-export const validateIndex = (indexJson, diskFolders = []) => {
-  const errors = [];
-  const folders = indexJson?.folders;
-  if (!Array.isArray(folders)) return ['index.json must have a "folders" array'];
-
-  const counts = folders.reduce((acc, f) => acc.set(f, (acc.get(f) || 0) + 1), new Map());
-  counts.forEach((n, f) => n > 1 && errors.push(`"${f}" is listed ${n} times in index.json`));
-
-  folders.forEach((f) => {
-    if (!diskFolders.includes(f)) errors.push(`"${f}" is listed in index.json but the folder does not exist`);
-  });
-  diskFolders.forEach((f) => {
-    if (!folders.includes(f)) errors.push(`folder "${f}" exists but is missing from index.json`);
-    if (!isValidStudentCode(f)) errors.push(`folder "${f}" must be a student code like 1234567-1234`);
-  });
-  return errors;
-};
+export const validateStudentFolders = (folders = []) =>
+  folders.flatMap(({ name, hasInfo }) => [
+    ...(isValidStudentCode(name) ? [] : [`folder "${name}" must be a student code like 1234567-1234`]),
+    ...(hasInfo ? [] : [`folder "${name}" has no info.json`]),
+  ]);
 
 /**
  * Finds items repeated across different students of the same topic.

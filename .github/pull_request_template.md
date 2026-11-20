@@ -17,7 +17,6 @@
 ## ✅ Checklist
 
 - [ ] My folder name is exactly my student code (`1234567-1234`)
-- [ ] I added my code to the topic's `index.json`
 - [ ] My `user` block has `username`, `profileImage` (https), `socialNetwork` and `socialLink`
 - [ ] Every question has 4 different options and the `answer` is one of them
 - [ ] I wrote my own questions (no copies from classmates or other topics)

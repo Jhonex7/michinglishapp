@@ -20,7 +20,19 @@ describe('topic registry (src/config/topics.js)', () => {
     expect(topic.type).not.toBe('vocabulary');
   });
 
-  test.each(QUIZ_TOPICS.map((t) => [t.folder]))('public/%s/index.json exists', (folder) => {
-    expect(fs.existsSync(path.join(PUBLIC_DIR, folder, 'index.json'))).toBe(true);
+  test('no index.json is committed in public/ (they are generated)', () => {
+    const found = [];
+    const walk = (dir) =>
+      fs.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
+        const full = path.join(dir, e.name);
+        if (e.isDirectory()) walk(full);
+        else if (e.name === 'index.json') found.push(path.relative(PUBLIC_DIR, full));
+      });
+    walk(PUBLIC_DIR);
+    expect(found, 'delete these files: index.json is generated automatically').toEqual([]);
+  });
+
+  test.each(QUIZ_TOPICS.map((t) => [t.folder]))('public/%s exists', (folder) => {
+    expect(fs.statSync(path.join(PUBLIC_DIR, folder)).isDirectory()).toBe(true);
   });
 });
