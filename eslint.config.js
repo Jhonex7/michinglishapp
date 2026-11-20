@@ -38,7 +38,6 @@ export default [
         { allowConstantExport: true },
       ],
       'react/prop-types': 'off', 
-      complexity: ['warn', {max: 10}]
     },
   },
 ]
