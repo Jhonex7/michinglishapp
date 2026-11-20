@@ -7,6 +7,8 @@ export const ROUND_SECONDS = 120;
 export const QUESTIONS_PER_ROUND = 10;
 export const FEEDBACK_MS = 1200;
 
+const count = (n, plural) => `${n} ${n === 1 ? plural.replace(/s$/, '') : plural}`;
+
 const resultMessage = (percent) => {
   if (percent === 100) return 'Purr-fect! 🏆';
   if (percent >= 80) return 'Excellent work! 🌟';
@@ -90,8 +92,8 @@ const QuizCard = ({
           <h1 className="h2 fw-bold">{title}</h1>
           {description && <p className="lead text-muted">{description}</p>}
           <div className="d-flex justify-content-center gap-2 flex-wrap mb-4">
-            <Badge bg="light" text="dark" className="border">📝 {questions.length} questions</Badge>
-            <Badge bg="light" text="dark" className="border">🧑‍🎓 {contributorCount} contributors</Badge>
+            <Badge bg="light" text="dark" className="border">📝 {count(questions.length, 'questions')}</Badge>
+            <Badge bg="light" text="dark" className="border">🧑‍🎓 {count(contributorCount, 'contributors')}</Badge>
             <Badge bg="light" text="dark" className="border">⏱️ {roundSeconds}s per round</Badge>
           </div>
           <p className="small text-muted">

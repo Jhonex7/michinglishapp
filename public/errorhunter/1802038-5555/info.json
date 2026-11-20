@@ -1,0 +1,46 @@
+{
+  "user": {
+    "username": "Fredy Ball",
+    "profileImage": "https://github.com/fredyunivalle.png",
+    "socialNetwork": "github",
+    "socialLink": "@fredyunivalle"
+  },
+  "errors": [
+    {
+      "sentence": "She don't like coffee in the morning.",
+      "wrong": "don't",
+      "correct": "doesn't",
+      "explanation": "With he, she and it we use doesn't in the present simple."
+    },
+    {
+      "sentence": "Yesterday we goed to the beach.",
+      "wrong": "goed",
+      "correct": "went",
+      "explanation": "Go is irregular: the past simple is went."
+    },
+    {
+      "sentence": "If I will see him, I will tell him.",
+      "wrong": "will see",
+      "correct": "see",
+      "explanation": "In the if-clause of the first conditional we use the present simple."
+    },
+    {
+      "sentence": "My brother is more taller than me.",
+      "wrong": "more taller",
+      "correct": "taller",
+      "explanation": "Short adjectives take -er; do not add more."
+    },
+    {
+      "sentence": "I have lived here since five years.",
+      "wrong": "since",
+      "correct": "for",
+      "explanation": "Use for with a period of time and since with a starting point."
+    },
+    {
+      "sentence": "There are much cats in my street.",
+      "wrong": "much",
+      "correct": "many",
+      "explanation": "Cats are countable, so we use many."
+    }
+  ]
+}
