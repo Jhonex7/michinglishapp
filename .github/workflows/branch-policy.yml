@@ -1,0 +1,48 @@
+name: Branch policy
+
+# Enforces where pull requests may come from:
+#   - main    <- only from the "develop" branch of THIS repository
+#   - develop <- any branch, from this repository or from forks
+#
+# This check only BLOCKS merges when "PR source" is marked as a required
+# status check in the branch protection rules (or ruleset) of main.
+on:
+  pull_request:
+    # "edited" re-runs the check if someone changes the PR's base branch.
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    name: PR source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source and target branches
+        # Branch and repository names come from the PR author: pass them
+        # through env variables, never interpolate them into the script.
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          BASE_REPO: ${{ github.repository }}
+        run: |
+          echo "PR: ${HEAD_REPO}:${HEAD_REF} -> ${BASE_REPO}:${BASE_REF}"
+
+          if [ "$BASE_REF" = "main" ]; then
+            if [ "$HEAD_REPO" != "$BASE_REPO" ] || [ "$HEAD_REF" != "develop" ]; then
+              {
+                echo "## ❌ Branch policy"
+                echo ""
+                echo "Pull requests to **main** must come from **develop** of \`$BASE_REPO\`."
+                echo ""
+                echo "This PR comes from \`$HEAD_REPO:$HEAD_REF\`. Change the base branch to **develop**."
+              } >> "$GITHUB_STEP_SUMMARY"
+              echo "::error::PRs to main are only accepted from $BASE_REPO:develop (got $HEAD_REPO:$HEAD_REF). Target develop instead."
+              exit 1
+            fi
+          fi
+
+          echo "## ✅ Branch policy" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`$HEAD_REPO:$HEAD_REF\` → \`$BASE_REF\` is allowed." >> "$GITHUB_STEP_SUMMARY"
