@@ -178,16 +178,3 @@ Every PR runs the **CI** pipeline:
 
 A red check means the PR cannot be merged. Open the failed job: the message
 says which file and which rule to fix.
-
-## 5. How your contribution is evaluated
-
-| Criterion | Weight |
-|---|---|
-| Pipeline is green on the first or second try | 20% |
-| Quality of English and of the questions (clear, one correct answer, plausible distractors) | 30% |
-| Originality (not copied, not trivial) | 20% |
-| Git hygiene: branch name, small commits with `feat:` / `fix:` / `docs:` prefixes, PR template filled | 15% |
-| Review: you reviewed at least one classmate's PR with useful comments | 15% |
-
-Code contributions are evaluated on: the issue is solved, tests included,
-readable code, and no unrelated changes.
