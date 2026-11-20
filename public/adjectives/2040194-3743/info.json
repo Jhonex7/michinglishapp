@@ -24,11 +24,6 @@
           "answer": "happiest"
         },
         {
-          "question": "Choose the correct order of adjectives: 'She bought a _____ dress.'",
-          "options": ["lovely red small", "small lovely red", "lovely small red", "red small lovely"],
-          "answer": "lovely small red"
-        },
-        {
           "question": "Which adjective best completes: 'This soup is too ___ to eat.'",
           "options": ["hot", "heat", "heated", "hotter"],
           "answer": "hot"
