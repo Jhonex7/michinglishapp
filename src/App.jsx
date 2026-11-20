@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import catTeacher from './assets/cat-teacher.png';
+import catTeacher from './assets/cat-teacher.webp';
 import { setData as setDataData, setLoading as setLoadingData, setError as setErrorData } from './store/data';
 import { setData as setDataLinkwords, setLoading as setLoadingLinkwords, setError as setErrorLinkwords } from "./store/linkwords";
 import { setData as setDataVerbs, setLoading as setLoadingVerbs, setError as setErrorVerbs } from "./store/verbs";
