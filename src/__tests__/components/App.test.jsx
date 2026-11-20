@@ -33,6 +33,13 @@ const fakeFiles = {
       { id: 4, en: 'fish', es: 'pez' },
     ],
   },
+  'sentencebuilder/index.json': { folders: ['2212345-3743'] },
+  'sentencebuilder/2212345-3743/info.json': { user: student.user, sentences: [{ sentence: 'I like green apples.' }] },
+  'errorhunter/index.json': { folders: ['2212345-3743'] },
+  'errorhunter/2212345-3743/info.json': {
+    user: student.user,
+    errors: [{ sentence: 'She go home.', wrong: 'go', correct: 'goes', explanation: 'Third person.' }],
+  },
   'verbs/index.json': { folders: ['2212345-3743'] },
   'verbs/2212345-3743/info.json': student,
 };
@@ -69,8 +76,20 @@ describe('App', () => {
 
   test('a quiz page loads its questions from public/<topic>', async () => {
     renderAt('/verbs');
-    expect(await screen.findByText(/1 questions/)).toBeInTheDocument();
+    expect(await screen.findByText(/1 question\b/)).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /verbs/i })).toBeInTheDocument();
+  });
+
+  test.each([
+    ['/sentence-builder', /sentence builder/i, 'Available words'],
+    ['/error-hunter', /error hunter/i, 'Sentence words'],
+  ])('%s loads the game with student content', async (path, heading, group) => {
+    renderAt(path);
+    expect(await screen.findByText(/1 sentence\b/)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: heading })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Start' }));
+    expect(screen.getByRole('group', { name: group })).toBeInTheDocument();
+    expect(screen.getByText('Written by')).toBeInTheDocument();
   });
 
   test('contributors page lists each student with code and social network', async () => {

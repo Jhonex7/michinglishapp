@@ -10,12 +10,17 @@
 //     URL, etc.
 
 import { SOCIAL_NETWORK_IDS, isValidHandle, normalizeHandle } from '../config/socialNetworks.js';
+import { findSpans, tokenize } from '../games/sentenceTools.js';
 
 export const STUDENT_CODE_PATTERN = /^\d{7}-\d{4}$/;
 export const OPTIONS_PER_QUESTION = 4;
 export const WORDS_PER_PUZZLE = 4;
 export const STRICT_MIN_QUESTIONS = 3;
 export const MAX_TEXT_LENGTH = 300;
+export const SENTENCE_MIN_WORDS = 4;
+export const SENTENCE_MAX_WORDS = 15;
+export const ERROR_SENTENCE_MIN_WORDS = 3;
+export const ERROR_SENTENCE_MAX_WORDS = 25;
 
 // Text from the starter templates that must be replaced before a PR.
 const PLACEHOLDERS = [
@@ -25,6 +30,8 @@ const PLACEHOLDERS = [
   /^option [a-d]$/i,
   /^english word \d$/i,
   /^palabra \d$/i,
+  /^write your (sentence|wrong sentence) here/i,
+  /^explain the mistake/i,
 ];
 const isPlaceholder = (value) => typeof value === 'string' && PLACEHOLDERS.some((re) => re.test(value.trim()));
 
@@ -36,6 +43,8 @@ export const findPlaceholders = (info) => {
     info?.user?.profileImage,
     ...listQuestions(info).flatMap((q) => [q?.question, ...(Array.isArray(q?.options) ? q.options : [])]),
     ...(Array.isArray(info?.words) ? info.words.flatMap((w) => [w?.en, w?.es]) : []),
+    ...(Array.isArray(info?.sentences) ? info.sentences.flatMap((x) => [x?.sentence, x?.hint]) : []),
+    ...(Array.isArray(info?.errors) ? info.errors.flatMap((x) => [x?.sentence, x?.explanation]) : []),
   ];
   const found = [...new Set(values.filter(isPlaceholder))];
   return found.length ? [`replace the template text: ${found.map((v) => `"${v}"`).join(', ')}`] : [];
@@ -46,8 +55,10 @@ const normalize = (text) => text.trim().toLowerCase().replace(/\s+/g, ' ');
 
 // Two questions are "the same" when the text AND the options match. Generic
 // prompts like "Choose the correct sentence" are fine with different options.
-const questionKey = (q) =>
-  JSON.stringify([normalize(q.question), q.options.filter(isNonEmptyString).map(normalize).sort()]);
+export const quizQuestionKey = (q) => {
+  if (!isNonEmptyString(q?.question) || !Array.isArray(q.options)) return null;
+  return JSON.stringify([normalize(q.question), q.options.filter(isNonEmptyString).map(normalize).sort()]);
+};
 
 export const isValidStudentCode = (code) => STUDENT_CODE_PATTERN.test(code);
 
@@ -144,7 +155,7 @@ export const validateQuizInfo = (info, { strict = false } = {}) => {
   const seen = new Set();
   questions.forEach((q) => {
     if (!isNonEmptyString(q?.question) || !Array.isArray(q.options)) return;
-    const key = questionKey(q);
+    const key = quizQuestionKey(q);
     if (seen.has(key)) errors.push(`duplicate question inside the file: "${q.question}"`);
     seen.add(key);
   });
@@ -206,23 +217,142 @@ export const validateIndex = (indexJson, diskFolders = []) => {
 };
 
 /**
- * Finds questions repeated across different students of the same topic.
+ * Finds items repeated across different students of the same topic.
  * entries: [{ studentCode, info }]
+ * By default it compares quiz questions; games pass their own listItems /
+ * itemKey / itemLabel (see src/config/contentTypes.js).
  */
-export const findCrossDuplicates = (entries) => {
+export const findCrossDuplicates = (
+  entries,
+  { listItems = listQuestions, itemKey = quizQuestionKey, itemLabel = (q) => q.question } = {},
+) => {
   const owners = new Map();
   const errors = [];
   entries.forEach(({ studentCode, info }) => {
-    listQuestions(info).forEach((q) => {
-      if (!isNonEmptyString(q?.question) || !Array.isArray(q.options)) return;
-      const key = questionKey(q);
+    listItems(info).forEach((item) => {
+      const key = itemKey(item);
+      if (!key) return;
       const owner = owners.get(key);
       if (owner && owner !== studentCode) {
-        errors.push(`"${q.question}" from ${studentCode} already exists in ${owner}`);
+        errors.push(`"${itemLabel(item)}" from ${studentCode} already exists in ${owner}`);
       } else {
         owners.set(key, studentCode);
       }
     });
   });
+  return errors;
+};
+
+// ---------------------------------------------------------------------------
+// Sentence Builder: { user, sentences: [{ sentence, hint? }] }
+// ---------------------------------------------------------------------------
+
+export const listSentences = (info) => (Array.isArray(info?.sentences) ? info.sentences : []);
+export const sentenceKey = (item) => (isNonEmptyString(item?.sentence) ? normalize(item.sentence) : null);
+
+const checkSentenceShape = (sentence, label, errors) => {
+  if (!/^[A-Z0-9"'¿¡]/.test(sentence.trim())) errors.push(`${label}: start the sentence with a capital letter`);
+  if (!/[.?!]["']?$/.test(sentence.trim())) errors.push(`${label}: end the sentence with . ? or !`);
+};
+
+export const validateSentenceBuilderInfo = (info, { strict = false } = {}) => {
+  if (!info || typeof info !== 'object') return ['info.json must contain a JSON object'];
+  const errors = [...validateUser(info.user, { strict })];
+  if (!Array.isArray(info.sentences) || info.sentences.length === 0) {
+    return [...errors, '"sentences" must be a non-empty array'];
+  }
+
+  const seen = new Set();
+  info.sentences.forEach((item, i) => {
+    const label = `sentences[${i}]`;
+    if (!item || typeof item !== 'object') {
+      errors.push(`${label} must be an object`);
+      return;
+    }
+    if (!isNonEmptyString(item.sentence)) {
+      errors.push(`${label}.sentence must be a non-empty string`);
+      return;
+    }
+    const words = tokenize(item.sentence).length;
+    if (words < SENTENCE_MIN_WORDS || words > SENTENCE_MAX_WORDS) {
+      errors.push(`${label}: use between ${SENTENCE_MIN_WORDS} and ${SENTENCE_MAX_WORDS} words (found ${words})`);
+    }
+    if (item.hint !== undefined && !isNonEmptyString(item.hint)) errors.push(`${label}.hint must be a non-empty string`);
+    if (strict) {
+      checkSentenceShape(item.sentence, label, errors);
+      if (item.sentence.length > MAX_TEXT_LENGTH) errors.push(`${label}: text longer than ${MAX_TEXT_LENGTH} characters`);
+      const extra = Object.keys(item).filter((k) => !['sentence', 'hint'].includes(k));
+      if (extra.length) errors.push(`${label}: unexpected keys ${extra.join(', ')}`);
+    }
+    const key = sentenceKey(item);
+    if (seen.has(key)) errors.push(`duplicate sentence inside the file: "${item.sentence}"`);
+    seen.add(key);
+  });
+
+  if (strict) {
+    errors.push(...findPlaceholders(info));
+    if (info.sentences.length < STRICT_MIN_QUESTIONS) {
+      errors.push(`add at least ${STRICT_MIN_QUESTIONS} sentences (found ${info.sentences.length})`);
+    }
+  }
+  return errors;
+};
+
+// ---------------------------------------------------------------------------
+// Error Hunter: { user, errors: [{ sentence, wrong, correct, explanation }] }
+// ---------------------------------------------------------------------------
+
+export const listErrorItems = (info) => (Array.isArray(info?.errors) ? info.errors : []);
+export const errorItemKey = (item) =>
+  isNonEmptyString(item?.sentence) ? normalize(item.sentence) : null;
+
+export const validateErrorHunterInfo = (info, { strict = false } = {}) => {
+  if (!info || typeof info !== 'object') return ['info.json must contain a JSON object'];
+  const errors = [...validateUser(info.user, { strict })];
+  if (!Array.isArray(info.errors) || info.errors.length === 0) {
+    return [...errors, '"errors" must be a non-empty array'];
+  }
+
+  const seen = new Set();
+  info.errors.forEach((item, i) => {
+    const label = `errors[${i}]`;
+    if (!item || typeof item !== 'object') {
+      errors.push(`${label} must be an object`);
+      return;
+    }
+    ['sentence', 'wrong', 'correct', 'explanation'].forEach((field) => {
+      if (!isNonEmptyString(item[field])) errors.push(`${label}.${field} must be a non-empty string`);
+    });
+    if (!isNonEmptyString(item.sentence) || !isNonEmptyString(item.wrong)) return;
+
+    const words = tokenize(item.sentence).length;
+    if (words < ERROR_SENTENCE_MIN_WORDS || words > ERROR_SENTENCE_MAX_WORDS) {
+      errors.push(`${label}: use between ${ERROR_SENTENCE_MIN_WORDS} and ${ERROR_SENTENCE_MAX_WORDS} words (found ${words})`);
+    }
+    const matches = findSpans(item.sentence, item.wrong).length;
+    if (matches === 0) errors.push(`${label}: "${item.wrong}" must appear in the sentence as whole word(s)`);
+    if (matches > 1) errors.push(`${label}: "${item.wrong}" appears ${matches} times; the mistake must be unique`);
+    if (isNonEmptyString(item.correct) && normalize(item.correct) === normalize(item.wrong)) {
+      errors.push(`${label}: "correct" must be different from "wrong"`);
+    }
+    if (strict) {
+      checkSentenceShape(item.sentence, label, errors);
+      [item.sentence, item.explanation].filter(isNonEmptyString).forEach((value) => {
+        if (value.length > MAX_TEXT_LENGTH) errors.push(`${label}: text longer than ${MAX_TEXT_LENGTH} characters`);
+      });
+      const extra = Object.keys(item).filter((k) => !['sentence', 'wrong', 'correct', 'explanation'].includes(k));
+      if (extra.length) errors.push(`${label}: unexpected keys ${extra.join(', ')}`);
+    }
+    const key = errorItemKey(item);
+    if (seen.has(key)) errors.push(`duplicate sentence inside the file: "${item.sentence}"`);
+    seen.add(key);
+  });
+
+  if (strict) {
+    errors.push(...findPlaceholders(info));
+    if (info.errors.length < STRICT_MIN_QUESTIONS) {
+      errors.push(`add at least ${STRICT_MIN_QUESTIONS} sentences (found ${info.errors.length})`);
+    }
+  }
   return errors;
 };

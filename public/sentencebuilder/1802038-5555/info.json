@@ -1,0 +1,16 @@
+{
+  "user": {
+    "username": "Fredy Ball",
+    "profileImage": "https://github.com/fredyunivalle.png",
+    "socialNetwork": "github",
+    "socialLink": "@fredyunivalle"
+  },
+  "sentences": [
+    { "sentence": "She goes to the gym every morning.", "hint": "Present simple, routine" },
+    { "sentence": "If it rains, we will stay at home.", "hint": "First conditional" },
+    { "sentence": "I have never been to London.", "hint": "Present perfect" },
+    { "sentence": "If I were you, I would study more.", "hint": "Second conditional" },
+    { "sentence": "They were watching a movie when the lights went out.", "hint": "Past continuous + past simple" },
+    { "sentence": "My cat sleeps on the sofa all day." }
+  ]
+}

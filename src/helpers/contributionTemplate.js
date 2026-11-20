@@ -1,4 +1,5 @@
 import { getTopicById } from '../config/topics.js';
+import { CONTENT_TYPES, getContentType } from '../config/contentTypes.js';
 
 export const EMPTY_PROFILE = {
   kind: 'quiz',
@@ -20,33 +21,9 @@ export const buildUserBlock = (profile) => ({
 /** Starter info.json for the chosen kind of contribution. */
 export const buildInfoTemplate = (profile) => {
   const user = buildUserBlock(profile);
-  if (profile.kind === 'vocabulary') {
-    return {
-      user,
-      words: [
-        { id: 1, en: 'english word 1', es: 'palabra 1' },
-        { id: 2, en: 'english word 2', es: 'palabra 2' },
-        { id: 3, en: 'english word 3', es: 'palabra 3' },
-        { id: 4, en: 'english word 4', es: 'palabra 4' },
-      ],
-    };
-  }
+  if (profile.kind === 'vocabulary') return { user, ...CONTENT_TYPES.vocabulary.template() };
   const topic = getTopicById(profile.topic);
-  return {
-    user,
-    topics: [
-      {
-        topic: topic ? topic.title.toLowerCase() : profile.topic,
-        questions: [
-          {
-            question: 'Write your question here. Use _____ for the blank.',
-            options: ['option A', 'option B', 'option C', 'option D'],
-            answer: 'option A',
-          },
-        ],
-      },
-    ],
-  };
+  return { user, ...getContentType(topic?.type).template(topic ? topic.title : profile.topic) };
 };
 
 /** Where the student must save the file inside the repo. */

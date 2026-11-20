@@ -5,13 +5,11 @@ import catTeacher from '../assets/cat-teacher.webp';
 import { QUIZ_TOPICS, TOPIC_GROUPS, formatCategoryName } from '../config/topics';
 import { useAllContent } from '../hooks/useContent';
 import { buildContributorDirectory } from '../helpers/contributors';
+import { countItems } from '../config/contentTypes';
 import { Avatar } from '../components/Contributor/ContributorCard';
 
-const countQuestions = (entries = []) =>
-  entries.reduce(
-    (total, entry) => total + (entry.topics || []).reduce((n, t) => n + (t.questions?.length || 0), 0),
-    0,
-  );
+const countTopicItems = (topic, entries = []) =>
+  entries.reduce((total, entry) => total + countItems(topic.type, entry), 0);
 
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
@@ -37,8 +35,8 @@ const HomePage = () => {
     () => buildContributorDirectory(quizData, vocabularyData, QUIZ_TOPICS),
     [quizData, vocabularyData],
   );
-  const totalQuestions = useMemo(
-    () => Object.values(quizData).reduce((n, entries) => n + countQuestions(entries), 0),
+  const totalItems = useMemo(
+    () => QUIZ_TOPICS.reduce((n, topic) => n + countTopicItems(topic, quizData[topic.id]), 0),
     [quizData],
   );
   const stat = (value) => (loading && !value ? '…' : value);
@@ -71,7 +69,7 @@ const HomePage = () => {
 
       <Row className="text-center mb-5 g-3">
         <Col xs={4}><div className="stat-number">{QUIZ_TOPICS.length + Object.keys(vocabularyData).length}</div><div className="small text-muted">activities</div></Col>
-        <Col xs={4}><div className="stat-number">{stat(totalQuestions)}</div><div className="small text-muted">questions</div></Col>
+        <Col xs={4}><div className="stat-number">{stat(totalItems)}</div><div className="small text-muted">exercises</div></Col>
         <Col xs={4}><div className="stat-number">{stat(contributors.length)}</div><div className="small text-muted">student contributors</div></Col>
       </Row>
 
