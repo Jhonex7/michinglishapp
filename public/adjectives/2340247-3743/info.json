@@ -1,0 +1,114 @@
+{
+  "user": {
+    "username": "Grosman Garcia",
+    "profileImage": "https://www.anipedia.net/focas/foca-polar/",
+    "socialLink": "@GrosGG"
+  },
+  "topics": [
+    {
+      "topic": "adjectives",
+      "questions": [
+        {
+          "question": "Which word is an adjective in the sentence: 'The tall tree reached above the roof'?",
+          "options": [
+            "tree",
+            "above",
+            "tall",
+            "reached"
+          ],
+          "answer": "tall"
+        },
+        {
+          "question": "Choose the sentence that uses an adjective correctly:",
+          "options": [
+            "The flower smells sweetly.",
+            "The flower is sweet.",
+            "The flower is sweetness.",
+            "The flower is sweeten."
+          ],
+          "answer": "The flower is sweet."
+        },
+        {
+          "question": "Which of the following is a comparative adjective?",
+          "options": [
+            "small",
+            "smaller",
+            "smallest",
+            "smallness"
+          ],
+          "answer": "smaller"
+        },
+        {
+          "question": "Identify the superlative adjective in this sentence: 'This is the brightest star in the sky.'",
+          "options": [
+            "bright",
+            "brighter",
+            "brightest",
+            "sky"
+          ],
+          "answer": "brightest"
+        },
+        {
+          "question": "Which sentence uses an adjective to describe temperature?",
+          "options": [
+            "The water is cold.",
+            "The water cooled quickly.",
+            "She drinks water slowly.",
+            "He jumped into the pool."
+          ],
+          "answer": "The water is cold."
+        },
+        {
+          "question": "Choose the correct order of adjectives: 'He wore a _____ jacket.'",
+          "options": [
+            "blue old leather",
+            "leather blue old",
+            "old blue leather",
+            "blue leather old"
+          ],
+          "answer": "old blue leather"
+        },
+        {
+          "question": "What kind of adjective is used in the sentence: 'There are five apples on the table.'?",
+          "options": [
+            "possessive adjective",
+            "numeral adjective",
+            "descriptive adjective",
+            "interrogative adjective"
+          ],
+          "answer": "numeral adjective"
+        },
+        {
+          "question": "Which of these is a descriptive adjective?",
+          "options": [
+            "my",
+            "three",
+            "large",
+            "which"
+          ],
+          "answer": "large"
+        },
+        {
+          "question": "Which adjective best completes this sentence: 'The room was very _____ after the storm.'",
+          "options": [
+            "noisy",
+            "noise",
+            "noisily",
+            "noiser"
+          ],
+          "answer": "noisy"
+        },
+        {
+          "question": "Choose the correct use of an adjective:",
+          "options": [
+            "She has a pink bag.",
+            "She has a pinkly bag.",
+            "She has a pinked bag.",
+            "She has a pink bagged."
+          ],
+          "answer": "She has a pink bag."
+        }
+      ]
+    }
+  ]
+}

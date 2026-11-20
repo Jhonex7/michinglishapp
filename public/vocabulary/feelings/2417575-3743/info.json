@@ -1,0 +1,13 @@
+{
+  "user": {
+    "username": "Juan Manuel Moreno",
+    "profileImage": "https://i.pinimg.com/736x/a2/59/83/a25983869700de8261a00b4475483bc9.jpg",
+    "socialLink": "@juanmmoren0"
+  },
+  "words": [
+    { "id": 1, "en": "hungry", "es": "hambriento" },
+    { "id": 2, "en": "frustrated", "es": "frustrado" },
+    { "id": 3, "en": "shy", "es": "tímido" },
+    { "id": 4, "en": "grateful", "es": "agradecido" }
+  ]
+}

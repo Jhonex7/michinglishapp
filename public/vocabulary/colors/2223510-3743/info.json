@@ -1,0 +1,13 @@
+{
+  "user": {
+    "username": "Liseth Rivera",
+    "profileImage": "https://www.kindpng.com/picc/m/660-6604220_mujer-dibujo-animado-hd-png-download.png",
+    "socialLink": "@lisethnat"
+  },
+  "words": [
+    { "id": 1, "en": "turquoise", "es": "turquesa" },
+    { "id": 2, "en": "purple", "es": "púrpura" },
+    { "id": 3, "en": "black", "es": "negro" },
+    { "id": 4, "en": "white", "es": "blanco" }
+  ]
+}
