@@ -1,7 +1,7 @@
 // Single source of truth for every activity (quizzes and games) in the app.
 //
 // To add a new topic:
-//   1. Create `public/<folder>/index.json` with `{ "folders": [] }`.
+//   1. Create `public/<folder>/` with at least one example student folder.
 //   2. Add one entry to QUIZ_TOPICS below. `type` says which game plays it
 //      (see src/config/contentTypes.js); it defaults to "quiz".
 // Routes, sidebar, home page, data loading and tests pick it up automatically.
