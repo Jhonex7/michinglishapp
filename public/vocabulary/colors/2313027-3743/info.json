@@ -1,0 +1,13 @@
+{
+  "user": {
+    "username": "Luis Yair",
+    "profileImage": "https://avatars.githubusercontent.com/Yairvalencia",
+    "socialLink": "@Yairvalencia"
+  },
+  "words": [
+    { "id": 1, "en": "orange", "es": "naranja" },
+    { "id": 2, "en": "pink", "es": "rosado" },
+    { "id": 3, "en": "brown", "es": "cafe" },
+    { "id": 4, "en": "gray", "es": "gris" }
+  ]
+}

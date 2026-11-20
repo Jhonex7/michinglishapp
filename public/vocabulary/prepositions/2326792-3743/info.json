@@ -1,0 +1,13 @@
+{
+  "user": {
+    "username": "Monica",
+    "profileImage": "https://avatars.githubusercontent.com/u/121248475?v=4&size=64",
+    "socialLink": "@moon_l0st"
+  },
+  "words": [
+    { "id": 1, "en": "in", "es": "en" },
+    { "id": 2, "en": "above",  "es": "por encima de" },
+    { "id": 3, "en": "next to",  "es": "al lado de" },
+    { "id": 4, "en": "in front of","es": "frente a" }
+  ]
+}
