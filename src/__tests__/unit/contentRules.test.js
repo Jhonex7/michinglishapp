@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import {
   findCrossDuplicates,
   isValidStudentCode,
-  validateIndex,
+  validateStudentFolders,
   validateQuestion,
   validateQuizInfo,
   validateUser,
@@ -147,17 +147,17 @@ describe('validateVocabularyInfo', () => {
   });
 });
 
-describe('validateIndex', () => {
-  test('detects missing, unlisted, repeated and badly named folders', () => {
-    const errors = validateIndex({ folders: ['1111111-1111', '1111111-1111', '2222222-2222'] }, [
-      '1111111-1111',
-      'my-group',
-    ]);
-    expect(errors).toEqual([
-      expect.stringContaining('listed 2 times'),
-      expect.stringContaining('"2222222-2222" is listed in index.json but the folder does not exist'),
-      expect.stringContaining('"my-group" exists but is missing'),
+describe('validateStudentFolders', () => {
+  test('flags folders that are not student codes or have no info.json', () => {
+    expect(
+      validateStudentFolders([
+        { name: '1111111-1111', hasInfo: true },
+        { name: 'my-group', hasInfo: true },
+        { name: '2222222-2222', hasInfo: false },
+      ]),
+    ).toEqual([
       expect.stringContaining('"my-group" must be a student code'),
+      expect.stringContaining('"2222222-2222" has no info.json'),
     ]);
   });
 });

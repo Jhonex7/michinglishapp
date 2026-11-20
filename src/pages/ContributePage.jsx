@@ -13,8 +13,7 @@ const REPO_URL = 'https://github.com/fredyunivalle/michinglishapp';
 
 const steps = [
   ['Fork', 'Fork the repository and create a branch: feature/<student-code>/<topic>.'],
-  ['Create', 'Generate your info.json below and save it at the path shown.'],
-  ['Register', 'Add your student code to the "folders" list of that topic’s index.json (or run npm run contribute).'],
+  ['Create', 'Generate your info.json below (or run npm run contribute) and save it at the path shown. Nothing else to register.'],
   ['Test', 'Run npm test and npm run check:contribution. Fix every red message.'],
   ['Pull request', 'Open a PR and fill in the template. The pipeline checks everything again.'],
 ];
@@ -55,7 +54,7 @@ const ContributePage = () => {
         network will appear next to every question you write.
       </p>
 
-      <Row xs={1} md={5} className="g-2 mb-4">
+      <Row xs={1} md={4} className="g-2 mb-4">
         {steps.map(([title, text], i) => (
           <Col key={title}>
             <Card className="michi-card h-100">

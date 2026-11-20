@@ -63,15 +63,20 @@ const codeFiles = files.filter((f) => !f.startsWith('public/'));
 const problems = [];
 const rows = [];
 
+// index.json files are generated (src/validation/contentIndex.js); a PR
+// must not add or edit them, or students would conflict with each other again.
+files
+  .filter((f) => f.startsWith('public/') && f.endsWith('/index.json'))
+  .forEach((file) =>
+    problems.push({ file, errors: ['delete this file: index.json is generated automatically from the folders'] }),
+  );
+
 for (const { file, type, section, code } of contentFiles) {
   const errors = [];
   const contentType = getContentType(type);
   const sectionDir = path.join(REPO_ROOT, 'public', section);
   if (!isValidStudentCode(code)) errors.push(`folder "${code}" must be your student code (1234567-1234)`);
 
-  const index = readJson(path.join(sectionDir, 'index.json'));
-  if (index.error) errors.push(index.error);
-  else if (!index.data.folders?.includes(code)) errors.push(`add "${code}" to public/${section}/index.json`);
 
   const info = readJson(path.join(REPO_ROOT, file));
   if (info.error) {

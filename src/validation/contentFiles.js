@@ -39,7 +39,4 @@ export const listContentSections = () => [
   })),
 ];
 
-export const listVocabularyCategories = () => {
-  const { data } = readJson(path.join(VOCABULARY_DIR, 'index.json'));
-  return Array.isArray(data?.folders) ? data.folders : [];
-};
+export const listVocabularyCategories = () => listSubfolders(VOCABULARY_DIR).sort();

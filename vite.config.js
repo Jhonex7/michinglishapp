@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { contentIndexPlugin } from './src/validation/contentIndex.js'
 
 /// <reference types="vitest" />
 // https://vitejs.dev/config/
@@ -8,6 +9,8 @@ export default defineConfig({
   base: '/michinglishapp/',
   plugins: [
     react(),
+    // Generates public/**/index.json from the student folders (never edited by hand).
+    contentIndexPlugin(),
     VitePWA({ 
       registerType: 'autoUpdate',
       base: '/michinglishapp/',

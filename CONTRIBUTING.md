@@ -40,8 +40,11 @@ npm run contribute -- --topic secondconditional --code 2212345-3743
 npm run contribute -- --vocabulary animals --code 2212345-3743
 ```
 
-This creates your folder with a starter `info.json` and adds your code to the
-topic's `index.json`. Then edit the file.
+This creates your folder with a starter `info.json`. Then edit the file.
+
+You never edit `index.json`: the app builds that list from the folders that
+exist. Two classmates adding to the same topic never conflict, because each
+one only adds their own folder.
 
 You can also open the **Contribute** page of the app: it builds your `user`
 block, shows a preview of how you will appear, and checks your file with the
@@ -146,7 +149,6 @@ Full example: [`public/errorhunter/1802038-5555/info.json`](public/errorhunter/1
 | Field | Rule |
 |---|---|
 | folder name | your student code: `1234567-1234` |
-| `index.json` | must list your folder (once) |
 | `user.username` | your name, as you want it shown |
 | `user.profileImage` | an `https://` image URL. Tip: `https://github.com/<your-user>.png` |
 | `user.socialNetwork` | one of `instagram`, `tiktok`, `x`, `facebook`, `linkedin`, `github`, `youtube`, `threads`, `twitch`, `discord`, `other` |

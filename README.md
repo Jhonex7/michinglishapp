@@ -62,33 +62,23 @@ Run them all locally with `npm run ci` and `npm run check:contribution`.
 ---
 
 ## 5) Folder & file structure for Vocabulary Puzzle
-All content is stored under `public/vocabulary/<topic>/`. Each **student** must create a folder named exactly as their **student code** (e.g., `1802038-5555`), containing an `info.json` file. The `index.json` file lists all these student folders.
+All content is stored under `public/vocabulary/<topic>/`. Each **student** must create a folder named exactly as their **student code** (e.g., `1802038-5555`), containing an `info.json` file.
 
 ```
 public/
   vocabulary/
     adjectives/
-      index.json
       1802038-5555/
         info.json
       1888888-5555/
         info.json
     feelings/
-      index.json
       1909090-3333/
         info.json
 ```
 
-### 5.1 `index.json` (topic index)
-Lists which folders should be loaded by the app for that topic:
-```json
-{
-  "folders": [
-    "1802038-5555",
-    "1888888-5555"
-  ]
-}
-```
+### 5.1 No `index.json` to edit
+The lists of student folders (`index.json`) are **generated automatically** from the folders that exist. Do not create or edit `index.json`: just add your folder. This way, classmates adding to the same topic never get merge conflicts.
 
 ### 5.2 `info.json` (student data)
 Each student provides their **username**, **profile image**, **favorite social network**, **social handle**, and **exactly four (4)** vocabulary pairs. Your **student code** is taken from the folder name and shown in the app.
@@ -125,7 +115,7 @@ Each student provides their **username**, **profile image**, **favorite social n
 ## 6) Quality checklist
 Before submitting the final PR:
 - [ ] Each student folder name equals their student code.
-- [ ] The topic folder (`adjectives`, `feelings`, etc.) includes all team members’ folders listed in `index.json`.
+- [ ] Each team member has their own folder inside the topic (`adjectives`, `feelings`, etc.).
 - [ ] Each `info.json` has exactly 4 word pairs.
 - [ ] JSON is valid.
 - [ ] Tests pass (`npm test`) and `npm run check:contribution` is green.
@@ -157,7 +147,7 @@ When the group branch is stable and all contributions are integrated:
 
 ## 9) Common mistakes
 - ❌ Folder name not matching student code.
-- ❌ Forgetting to include folder in `index.json`.
+- ❌ Creating or editing `index.json` (it is generated automatically).
 - ❌ More or fewer than 4 words in `info.json`.
 - ❌ Opening PRs directly to the professor’s repo from individual students.
 - ❌ Editing `main` or `develop` directly.

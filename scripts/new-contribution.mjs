@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Creates your contribution folder with a starter info.json and registers it
-// in index.json, so you only have to edit the questions.
+// Creates your contribution folder with a starter info.json, so you only
+// have to edit it. (index.json files are generated automatically.)
 //
 //   npm run contribute -- --topic verbs --code 2212345-3743
 //   npm run contribute -- --vocabulary animals --code 2212345-3743
@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { QUIZ_TOPICS } from '../src/config/topics.js';
 import { isValidStudentCode } from '../src/validation/contentRules.js';
-import { PUBLIC_DIR, VOCABULARY_DIR, listVocabularyCategories, readJson } from '../src/validation/contentFiles.js';
+import { PUBLIC_DIR, VOCABULARY_DIR, listVocabularyCategories } from '../src/validation/contentFiles.js';
 import { buildInfoTemplate } from '../src/helpers/contributionTemplate.js';
 
 const args = process.argv.slice(2);
@@ -57,25 +57,7 @@ const template = buildInfoTemplate({
 fs.mkdirSync(studentDir, { recursive: true });
 fs.writeFileSync(infoPath, `${JSON.stringify(template, null, 2)}\n`);
 
-// Append to index.json keeping its current formatting, so the diff is one line.
-const indexPath = path.join(sectionDir, 'index.json');
-const index = readJson(indexPath);
-if (index.error) fail(index.error);
-if (!index.data.folders.includes(code)) {
-  const raw = fs.readFileSync(indexPath, 'utf8');
-  const lastEntry = /("[^"]+")(\s*)\]/;
-  const updated =
-    index.data.folders.length > 0 && lastEntry.test(raw)
-      ? raw.replace(lastEntry, (_, last, space) => {
-          const indent = (space.match(/\n([ \t]*)$/) || [])[1] ?? '';
-          const itemIndent = (raw.match(/\n([ \t]*)"[^"]+"\s*,?\s*\n/) || [])[1] ?? '  ';
-          return `${last},\n${itemIndent}"${code}"\n${indent}]`;
-        })
-      : `${JSON.stringify({ ...index.data, folders: [...index.data.folders, code] }, null, 2)}\n`;
-  fs.writeFileSync(indexPath, updated);
-}
-
-console.log(`✅ Created ${path.relative(process.cwd(), infoPath)} and registered it in index.json.
+console.log(`✅ Created ${path.relative(process.cwd(), infoPath)}.
 Next steps:
   1. Edit the file: your name, image, favorite social network and questions.
   2. npm test && npm run check:contribution
