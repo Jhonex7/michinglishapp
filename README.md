@@ -4,7 +4,7 @@
 >
 > **Workflow:** Fork-based GitFlow with protected branches and individual student contributions.
 >
-> 📘 **Full guide, rules, examples and evaluation:** [CONTRIBUTING.md](CONTRIBUTING.md)
+> 📘 **Full guide, rules and examples:** [CONTRIBUTING.md](CONTRIBUTING.md)
 >
 > 🧰 **Quick start:** `npm install` → `npm run contribute -- --topic verbs --code <your-code>` → edit your file → `npm test` → PR.
 
