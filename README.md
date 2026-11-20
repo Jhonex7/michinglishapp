@@ -1,13 +1,19 @@
-# michinglishapp – Vocabulary Puzzle Contribution Guide
+# michinglishapp – Contribution Guide
 
-> **Audience:** Student teams contributing new content to the **Vocabulary Puzzle** section.
+> **Audience:** Student teams contributing quiz questions, vocabulary puzzles and code.
 >
 > **Workflow:** Fork-based GitFlow with protected branches and individual student contributions.
+>
+> 📘 **Full guide, rules, examples and evaluation:** [CONTRIBUTING.md](CONTRIBUTING.md)
+>
+> 🧰 **Quick start:** `npm install` → `npm run contribute -- --topic verbs --code <your-code>` → edit your file → `npm test` → PR.
+
+Every question in the app shows the **name, student code and favorite social network** of the student who wrote it.
 
 ---
 
 ## 1) Overview
-This repository powers **michinglishapp**, a React-based learning app. Your task is to contribute **Vocabulary Puzzle** content (e.g., *adjectives, adverbs, animals, colors, familymembers, feelings,* etc.) following the folder and JSON structure required for the app to load the puzzles correctly.
+This repository powers **michinglishapp**, a React-based learning app. You can contribute **quiz questions** (verbs, conditionals, modals…), **Vocabulary Puzzle** content (e.g., *adjectives, adverbs, animals, colors, familymembers, feelings,* etc.) or **code**, following the folder and JSON structure required for the app to load them correctly.
 
 Each student contributes using their **own student code** as the folder name (e.g., `1802038-5555`), not by group names.
 
@@ -42,7 +48,16 @@ We use a **fork-first** approach and a simplified **GitFlow** model:
 
 ---
 
+## 4) Automatic checks (CI pipeline)
+Every PR runs `.github/workflows/ci.yml`:
+- **Contribution check**: strict rules for the `info.json` files you changed, plus a summary (student, code, social network, number of questions).
+- **Lint**: `npm run lint`
+- **Tests**: `npm test` (all content in `public/`, helpers and React components)
+- **Build**: `npm run build`
 
+Run them all locally with `npm run ci` and `npm run check:contribution`.
+
+---
 
 ## 5) Folder & file structure for Vocabulary Puzzle
 All content is stored under `public/vocabulary/<topic>/`. Each **student** must create a folder named exactly as their **student code** (e.g., `1802038-5555`), containing an `info.json` file. The `index.json` file lists all these student folders.
@@ -74,7 +89,7 @@ Lists which folders should be loaded by the app for that topic:
 ```
 
 ### 5.2 `info.json` (student data)
-Each student provides their **username**, **profile image**, **social link**, and **exactly four (4)** vocabulary pairs.
+Each student provides their **username**, **profile image**, **favorite social network**, **social handle**, and **exactly four (4)** vocabulary pairs. Your **student code** is taken from the folder name and shown in the app.
 
 **Example:**
 ```json
@@ -82,6 +97,7 @@ Each student provides their **username**, **profile image**, **social link**, an
   "user": {
     "username": "Fredy Ball",
     "profileImage": "https://static.wikia.nocookie.net/multiversus/images/a/ac/Superman_Portrait_Full.png",
+    "socialNetwork": "instagram",
     "socialLink": "@fredyballest"
   },
   "words": [
@@ -95,6 +111,8 @@ Each student provides their **username**, **profile image**, **social link**, an
 
 **Rules:**
 - Each `info.json` must contain **exactly four (4)** word pairs.
+- `socialNetwork` must be one of: `instagram`, `tiktok`, `x`, `facebook`, `linkedin`, `github`, `youtube`, `threads`, `twitch`, `discord`, `other`.
+- `profileImage` must be an `https://` URL.
 - The folder name must match the **student’s code**.
 - JSON must be valid and properly formatted.
 - Each `id` must be unique within the file.
@@ -108,7 +126,7 @@ Before submitting the final PR:
 - [ ] The topic folder (`adjectives`, `feelings`, etc.) includes all team members’ folders listed in `index.json`.
 - [ ] Each `info.json` has exactly 4 word pairs.
 - [ ] JSON is valid.
-- [ ] Tests pass (`npm test`).
+- [ ] Tests pass (`npm test`) and `npm run check:contribution` is green.
 - [ ] The app runs and displays all the new puzzles correctly.
 
 ---
@@ -149,7 +167,10 @@ Before submitting:
 ```bash
 npm test
 ```
-Ensure your dataset passes the vocabulary validation tests.
+Ensure your dataset passes the validation tests. Then check the files you changed with the strict PR rules:
+```bash
+npm run check:contribution
+```
 
 ---
 

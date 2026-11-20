@@ -1,0 +1,21 @@
+name: Wrong question or answer
+description: Report a question with a mistake (wrong answer, typo, duplicated options…).
+labels: ["content"]
+body:
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      placeholder: e.g. Third Conditional
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: Author shown in the app (name or student code)
+  - type: textarea
+    id: problem
+    attributes:
+      label: Question and problem
+    validations:
+      required: true
