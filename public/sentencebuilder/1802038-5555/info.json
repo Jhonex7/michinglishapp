@@ -6,11 +6,68 @@
     "socialLink": "@fredyunivalle"
   },
   "sentences": [
-    { "sentence": "She goes to the gym every morning.", "hint": "Present simple, routine" },
-    { "sentence": "If it rains, we will stay at home.", "hint": "First conditional" },
-    { "sentence": "I have never been to London.", "hint": "Present perfect" },
-    { "sentence": "If I were you, I would study more.", "hint": "Second conditional" },
-    { "sentence": "They were watching a movie when the lights went out.", "hint": "Past continuous + past simple" },
-    { "sentence": "My cat sleeps on the sofa all day." }
+    {
+      "sentence": "She goes to the gym every morning.",
+      "hint": "Present simple, routine"
+    },
+    {
+      "sentence": "If it rains, we will stay at home.",
+      "hint": "First conditional"
+    },
+    {
+      "sentence": "I have never been to London.",
+      "hint": "Present perfect"
+    },
+    {
+      "sentence": "If I were you, I would study more.",
+      "hint": "Second conditional"
+    },
+    {
+      "sentence": "They were watching a movie when the lights went out.",
+      "hint": "Past continuous + past simple"
+    },
+    {
+      "sentence": "My cat sleeps on the sofa all day."
+    },
+    {
+      "sentence": "Could you tell me where the station is?",
+      "hint": "Indirect questions"
+    },
+    {
+      "sentence": "She has been studying English for three years.",
+      "hint": "Present perfect continuous"
+    },
+    {
+      "sentence": "The book was written by a famous author.",
+      "hint": "Passive voice"
+    },
+    {
+      "sentence": "He is taller than his sister.",
+      "hint": "Comparatives"
+    },
+    {
+      "sentence": "I used to play football when I was a child.",
+      "hint": "Used to: past habits"
+    },
+    {
+      "sentence": "You must not use your phone during the exam.",
+      "hint": "Modals of obligation"
+    },
+    {
+      "sentence": "Have you ever eaten Colombian food?",
+      "hint": "Present perfect: experiences"
+    },
+    {
+      "sentence": "What time does the next bus leave?",
+      "hint": "Present simple: timetables"
+    },
+    {
+      "sentence": "If you heat ice, it melts.",
+      "hint": "Zero conditional"
+    },
+    {
+      "sentence": "My parents are going to visit us next weekend.",
+      "hint": "Going to: future plans"
+    }
   ]
 }

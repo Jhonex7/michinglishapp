@@ -11,12 +11,22 @@
       "questions": [
         {
           "question": "If I _____ a million dollars, I would travel around the world.",
-          "options": ["have", "had", "will have", "would have"],
+          "options": [
+            "have",
+            "had",
+            "will have",
+            "would have"
+          ],
           "answer": "had"
         },
         {
           "question": "If she spoke English better, she _____ that job.",
-          "options": ["gets", "will get", "would get", "got"],
+          "options": [
+            "gets",
+            "will get",
+            "would get",
+            "got"
+          ],
           "answer": "would get"
         },
         {
@@ -31,13 +41,83 @@
         },
         {
           "question": "What would you do if you _____ invisible for a day?",
-          "options": ["are", "were", "will be", "have been"],
+          "options": [
+            "are",
+            "were",
+            "will be",
+            "have been"
+          ],
           "answer": "were"
         },
         {
           "question": "If cats _____ talk, they would complain about Mondays too.",
-          "options": ["can", "could", "will", "would"],
+          "options": [
+            "can",
+            "could",
+            "will",
+            "would"
+          ],
           "answer": "could"
+        },
+        {
+          "question": "If we _____ closer to the beach, we would go swimming every day.",
+          "options": [
+            "lived",
+            "live",
+            "will live",
+            "would live"
+          ],
+          "answer": "lived"
+        },
+        {
+          "question": "What would you do if you _____ a ghost in your house?",
+          "options": [
+            "saw",
+            "see",
+            "will see",
+            "would see"
+          ],
+          "answer": "saw"
+        },
+        {
+          "question": "If I were rich, I _____ a big house for my parents.",
+          "options": [
+            "would buy",
+            "buy",
+            "bought",
+            "will buy"
+          ],
+          "answer": "would buy"
+        },
+        {
+          "question": "She would be happier if she _____ so many hours.",
+          "options": [
+            "didn't work",
+            "doesn't work",
+            "won't work",
+            "wouldn't work"
+          ],
+          "answer": "didn't work"
+        },
+        {
+          "question": "If he _____ the answer, he would tell us.",
+          "options": [
+            "knew",
+            "knows",
+            "would know",
+            "has known"
+          ],
+          "answer": "knew"
+        },
+        {
+          "question": "They _____ more often if the tickets were cheaper.",
+          "options": [
+            "would travel",
+            "travel",
+            "will travel",
+            "traveled"
+          ],
+          "answer": "would travel"
         }
       ]
     }

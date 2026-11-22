@@ -1,0 +1,30 @@
+{
+  "user": {
+    "username": "Fredy Ball",
+    "profileImage": "https://github.com/fredyunivalle.png",
+    "socialNetwork": "github",
+    "socialLink": "@fredyunivalle"
+  },
+  "words": [
+    {
+      "id": 1,
+      "en": "sun",
+      "es": "sol"
+    },
+    {
+      "id": 2,
+      "en": "rain",
+      "es": "lluvia"
+    },
+    {
+      "id": 3,
+      "en": "wind",
+      "es": "viento"
+    },
+    {
+      "id": 4,
+      "en": "cloud",
+      "es": "nube"
+    }
+  ]
+}

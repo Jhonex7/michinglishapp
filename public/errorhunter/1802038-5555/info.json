@@ -41,6 +41,66 @@
       "wrong": "much",
       "correct": "many",
       "explanation": "Cats are countable, so we use many."
+    },
+    {
+      "sentence": "He can sings very well.",
+      "wrong": "sings",
+      "correct": "sing",
+      "explanation": "After modal verbs like can we use the base form of the verb."
+    },
+    {
+      "sentence": "I have seen that movie yesterday.",
+      "wrong": "have seen",
+      "correct": "saw",
+      "explanation": "With a finished time like yesterday we use the past simple, not the present perfect."
+    },
+    {
+      "sentence": "There is many people at the party.",
+      "wrong": "is",
+      "correct": "are",
+      "explanation": "People is plural, so we say there are."
+    },
+    {
+      "sentence": "This is the most good restaurant in town.",
+      "wrong": "most good",
+      "correct": "best",
+      "explanation": "Good is irregular: the superlative is the best."
+    },
+    {
+      "sentence": "I am agree with your opinion.",
+      "wrong": "am agree",
+      "correct": "agree",
+      "explanation": "Agree is a verb, so we do not use am before it."
+    },
+    {
+      "sentence": "My sister doesn't likes chocolate.",
+      "wrong": "likes",
+      "correct": "like",
+      "explanation": "After doesn't we use the base form of the verb, without -s."
+    },
+    {
+      "sentence": "We arrived to the airport at six.",
+      "wrong": "to",
+      "correct": "at",
+      "explanation": "We arrive at a place (or in a city), never to a place."
+    },
+    {
+      "sentence": "She bought an uniform for school.",
+      "wrong": "an",
+      "correct": "a",
+      "explanation": "Uniform starts with a \"you\" sound, so we use a, not an."
+    },
+    {
+      "sentence": "Listen! The baby cry in the other room.",
+      "wrong": "cry",
+      "correct": "is crying",
+      "explanation": "Listen! shows the action is happening now, so we use the present continuous."
+    },
+    {
+      "sentence": "My aunt is married with a doctor.",
+      "wrong": "with",
+      "correct": "to",
+      "explanation": "We say married to someone, not married with someone."
     }
   ]
 }
