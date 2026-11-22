@@ -158,6 +158,12 @@ Full example: [`public/errorhunter/1802038-5555/info.json`](public/errorhunter/1
 | originality | no question repeated in your file or copied from a classmate |
 | vocabulary | exactly **4** pairs, unique `id`s, `en` and `es` not empty |
 | templates | replace every placeholder ("Your Name", "option A", …) |
+| location | exactly `public/<topic>/<student-code>/info.json` (lowercase `info.json`, nothing else in the folder) |
+| keys | only the keys shown in the examples; a typo like `socialnetwork` is reported with a suggestion |
+| image | a direct image link, not a profile page (`https://github.com/ana.png`, not `https://github.com/ana`) |
+| `topic` | in quizzes, the name of the folder: `"second conditional"` inside `public/secondconditional` |
+| same name | your `username` must be the same in every file you contribute |
+| others' work | a PR must not delete or move a classmate's folder |
 
 Before opening your PR:
 
@@ -195,6 +201,7 @@ npm run ci     # lint + tests + build
 | `src/components/modules/VocabularyMemoryModule.jsx` | the memory puzzle game |
 | `src/pages/` | Home, Activity (plays any topic), Contributors, Contribute, Vocabulary puzzle |
 | `src/store/` | Redux: quiz topics load on demand, vocabulary at startup |
+| `src/validation/contributionCheck.js` | the logic of the PR check (file locations, deletions, copies, report) |
 | `scripts/` | `check-contribution.mjs` (PR check) and `new-contribution.mjs` (scaffolder) |
 
 ### Ideas for good first issues

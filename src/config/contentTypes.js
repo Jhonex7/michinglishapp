@@ -13,6 +13,7 @@ import {
   listErrorItems,
   listQuestions,
   listSentences,
+  puzzleKey,
   quizQuestionKey,
   sentenceKey,
   validateErrorHunterInfo,
@@ -82,6 +83,13 @@ export const CONTENT_TYPES = {
     listItems: (info) => (Array.isArray(info?.words) ? info.words : []),
     itemKey: () => null,
     itemLabel: (w) => w.en,
+    // Copies are detected per puzzle (same 4 English words), not per word:
+    // many puzzles share common words like "cat" or "dog".
+    duplicates: {
+      listItems: (info) => [info],
+      itemKey: puzzleKey,
+      itemLabel: (info) => `puzzle with ${(info.words || []).map((w) => w.en).join(', ')}`,
+    },
     template: () => ({
       words: [
         { id: 1, en: 'english word 1', es: 'palabra 1' },
@@ -93,7 +101,17 @@ export const CONTENT_TYPES = {
   },
 };
 
-export const getContentType = (type) => CONTENT_TYPES[type] || CONTENT_TYPES.quiz;
+/** Rules used to find content copied from another student. */
+export const duplicateRules = (type) => getContentType(type).duplicates || getContentType(type);
+
+/** Content type by name. No type means quiz; an unknown name is a bug in topics.js. */
+export const getContentType = (type) => {
+  if (type === undefined || type === null) return CONTENT_TYPES.quiz;
+  if (!CONTENT_TYPES[type]) {
+    throw new Error(`Unknown content type "${type}". Use one of: ${Object.keys(CONTENT_TYPES).join(', ')}`);
+  }
+  return CONTENT_TYPES[type];
+};
 
 /** Guesses the content type of a pasted info.json from its keys. */
 export const detectContentType = (info) => {
