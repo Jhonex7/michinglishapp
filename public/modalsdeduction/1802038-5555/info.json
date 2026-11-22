@@ -1,0 +1,95 @@
+{
+  "user": {
+    "username": "Fredy Ball",
+    "profileImage": "https://github.com/fredyunivalle.png",
+    "socialNetwork": "github",
+    "socialLink": "@fredyunivalle"
+  },
+  "topics": [
+    {
+      "topic": "modals of deduction",
+      "questions": [
+        {
+          "question": "Her lights are off and nobody answers the door. She _____ be at home.",
+          "options": [
+            "can't",
+            "must",
+            "should",
+            "will"
+          ],
+          "answer": "can't"
+        },
+        {
+          "question": "He has been running for two hours. He _____ be very tired.",
+          "options": [
+            "must",
+            "can't",
+            "mustn't",
+            "shouldn't"
+          ],
+          "answer": "must"
+        },
+        {
+          "question": "I'm not sure where Tom is. He _____ be in the library.",
+          "options": [
+            "might",
+            "must",
+            "can't",
+            "has to"
+          ],
+          "answer": "might"
+        },
+        {
+          "question": "You _____ have seen Maria at the party. She was in Bogotá that night.",
+          "options": [
+            "can't",
+            "must",
+            "might",
+            "should"
+          ],
+          "answer": "can't"
+        },
+        {
+          "question": "Carlos got the best grade in the class. He _____ have studied a lot.",
+          "options": [
+            "must",
+            "can't",
+            "couldn't",
+            "mustn't"
+          ],
+          "answer": "must"
+        },
+        {
+          "question": "I can't find my keys. I _____ have left them at the office, but I'm not sure.",
+          "options": [
+            "might",
+            "must",
+            "can't",
+            "should"
+          ],
+          "answer": "might"
+        },
+        {
+          "question": "She is wearing a doctor's coat and a stethoscope. She _____ work at the hospital.",
+          "options": [
+            "must",
+            "can't",
+            "mustn't",
+            "needn't"
+          ],
+          "answer": "must"
+        },
+        {
+          "question": "Your phone _____ be broken. I just called you and it rang.",
+          "options": [
+            "can't",
+            "must",
+            "might",
+            "should"
+          ],
+          "answer": "can't"
+        }
+      ]
+    }
+  ]
+}

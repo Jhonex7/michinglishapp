@@ -235,7 +235,7 @@ Every PR runs the **CI** pipeline:
 |---|---|
 | Contribution check | strict rules on the `info.json` files you changed + summary table (who, code, network, # questions) |
 | Lint | ESLint |
-| Tests | content of the whole repo, helpers, components (with coverage) |
+| Tests | content of the whole repo, helpers, components (with coverage). Your items are also **played** in the real games: a player who knows the answers must win every round |
 | Build | the app compiles |
 
 A red check means the PR cannot be merged. Open the failed job: the message
