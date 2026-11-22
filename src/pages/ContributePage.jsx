@@ -5,7 +5,8 @@ import { QUIZ_TOPICS, formatCategoryName } from '../config/topics';
 import { SOCIAL_NETWORKS } from '../config/socialNetworks';
 import { toContributor } from '../helpers/contributors';
 import { EMPTY_PROFILE, buildFilePath, buildInfoTemplate } from '../helpers/contributionTemplate';
-import { isValidStudentCode } from '../validation/contentRules';
+import { isValidStudentCode, validateNoDuplicateKeys } from '../validation/contentRules';
+import { parseInfoText } from '../validation/jsonText';
 import { detectContentType, getContentType } from '../config/contentTypes';
 import { useSelector } from 'react-redux';
 
@@ -37,13 +38,19 @@ const ContributePage = () => {
 
   const check = useMemo(() => {
     if (!pasted.trim()) return null;
-    try {
-      const info = JSON.parse(pasted);
-      const type = detectContentType(info);
-      return { type, errors: getContentType(type).validate(info, { strict: true }) };
-    } catch (error) {
-      return { errors: [`This is not valid JSON: ${error.message}`] };
+    const parsed = parseInfoText(pasted);
+    if (parsed.error) return { errors: [`This is not valid JSON: ${parsed.error}`] };
+    if (!parsed.data || typeof parsed.data !== 'object' || Array.isArray(parsed.data)) {
+      return { errors: ['info.json must contain a JSON object: { "user": …, … }'] };
     }
+    const type = detectContentType(parsed.data);
+    return {
+      type,
+      errors: [
+        ...validateNoDuplicateKeys(parsed.text),
+        ...getContentType(type).validate(parsed.data, { strict: true }),
+      ],
+    };
   }, [pasted]);
 
   return (
