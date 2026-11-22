@@ -172,6 +172,13 @@ npm test                       # all content + app tests
 npm run check:contribution     # strict rules for the files YOU changed
 ```
 
+`check:contribution` also shows **grammar hints** (⚠️ warnings, made offline
+with [Harper](https://writewithharper.com)) for the sentences you added: the
+question with the blank filled with the answer, your sentences, corrections
+and explanations. They never block your PR, and sometimes they are wrong:
+read each one and fix it only if it is a real mistake. The professor can see
+hints for all the content with `npm run check:grammar`.
+
 ## 3. Code contributions
 
 1. Pick an issue labeled **good first issue** (or propose one) and comment

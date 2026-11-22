@@ -36,6 +36,8 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      # harper.js gives grammar hints (warnings only).
+      - run: npm ci
       # Strict rules for the info.json files this PR adds or changes, plus a
       # summary table (student, code, social network) in the run summary.
       - name: Validate changed student content
