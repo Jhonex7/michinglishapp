@@ -156,7 +156,11 @@ describe('content types', () => {
   test('countItems uses the right list for each type', () => {
     expect(countItems('error-hunter', { errors: [1, 2] })).toBe(2);
     expect(countItems('quiz', { topics: [{ questions: [1, 2, 3] }] })).toBe(3);
-    expect(getContentType('unknown')).toBe(CONTENT_TYPES.quiz);
+    expect(getContentType(undefined)).toBe(CONTENT_TYPES.quiz);
+  });
+
+  test('an unknown content type is an error, not a silent quiz', () => {
+    expect(() => getContentType('sentence_builder')).toThrow('Unknown content type "sentence_builder"');
   });
 
   test.each([

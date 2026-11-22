@@ -3,19 +3,34 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { QUIZ_TOPICS } from '../config/topics.js';
+import { parseInfoText } from './jsonText.js';
 
 export const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const PUBLIC_DIR = path.join(REPO_ROOT, 'public');
 export const VOCABULARY_DIR = path.join(PUBLIC_DIR, 'vocabulary');
 
-/** Parses JSON and returns { data } or { error } with a readable message. */
+/** Parses JSON and returns { data, text } or { error } with a readable message. */
 export const readJson = (filePath) => {
+  let raw;
   try {
-    return { data: JSON.parse(fs.readFileSync(filePath, 'utf8')) };
+    raw = fs.readFileSync(filePath, 'utf8');
   } catch (error) {
-    const reason = error.code === 'ENOENT' ? 'file not found' : `invalid JSON (${error.message})`;
+    const reason = error.code === 'ENOENT' ? 'file not found' : error.message;
     return { error: `${path.relative(REPO_ROOT, filePath)}: ${reason}` };
   }
+  const result = parseInfoText(raw);
+  return result.error ? { error: `${path.relative(REPO_ROOT, filePath)}: ${result.error}` } : result;
+};
+
+/** Every file inside `dir` (recursive), as paths relative to `dir`. */
+export const listFilesRecursive = (dir) => {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    return entry.isDirectory()
+      ? listFilesRecursive(full).map((f) => path.join(entry.name, f))
+      : [entry.name];
+  });
 };
 
 export const listSubfolders = (dir) =>

@@ -39,6 +39,9 @@ jobs:
       # Strict rules for the info.json files this PR adds or changes, plus a
       # summary table (student, code, social network) in the run summary.
       - name: Validate changed student content
+        # The branch name comes from the PR author: pass it as env, never inline.
+        env:
+          HEAD_REF: ${{ github.head_ref }}
         run: node scripts/check-contribution.mjs --base "origin/${{ github.base_ref }}"
 
   lint:

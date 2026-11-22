@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-// Validates the content files a pull request adds or changes, with STRICT
-// rules (favorite social network required, https image, etc.), and prints a
-// report of who contributed what. Used by .github/workflows/ci.yml.
+// Validates the content files a pull request adds, changes, moves or deletes,
+// with STRICT rules (favorite social network required, https image, files in
+// the right place, etc.), and prints a report of who contributed what. Used by
+// .github/workflows/ci.yml. The logic lives in src/validation/contributionCheck.js.
 //
 //   npm run check:contribution                    # compare with origin/develop
 //   npm run check:contribution -- --base origin/main
@@ -12,12 +13,8 @@
 
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
-import path from 'node:path';
-import { QUIZ_TOPICS } from '../src/config/topics.js';
-import { getContentType } from '../src/config/contentTypes.js';
-import { resolveSocialProfile } from '../src/config/socialNetworks.js';
-import { findCrossDuplicates, isValidStudentCode } from '../src/validation/contentRules.js';
-import { REPO_ROOT, listSubfolders, readJson } from '../src/validation/contentFiles.js';
+import { REPO_ROOT } from '../src/validation/contentFiles.js';
+import { buildReport, checkContribution, parseNameStatus } from '../src/validation/contributionCheck.js';
 
 const args = process.argv.slice(2);
 const argValue = (name) => {
@@ -25,110 +22,37 @@ const argValue = (name) => {
   return i >= 0 ? args[i + 1] : undefined;
 };
 
+const git = (...gitArgs) => execFileSync('git', gitArgs, { cwd: REPO_ROOT, encoding: 'utf8' }).trim();
+
 const changedFiles = () => {
   const explicit = argValue('--files');
-  if (explicit) return explicit.split(',').map((f) => f.trim()).filter(Boolean);
+  if (explicit) {
+    return explicit
+      .split(',')
+      .map((f) => f.trim())
+      .filter(Boolean)
+      .map((file) => ({ status: 'A', file }));
+  }
   const base = argValue('--base') || process.env.BASE_REF || 'origin/develop';
   try {
-    return execFileSync('git', ['diff', '--name-only', '--diff-filter=ACMR', `${base}...HEAD`], {
-      cwd: REPO_ROOT,
-      encoding: 'utf8',
-    })
-      .split('\n')
-      .filter(Boolean);
+    return parseNameStatus(git('diff', '--name-status', '-M', `${base}...HEAD`));
   } catch (error) {
     console.error(`Could not diff against "${base}". Run "git fetch origin" first.\n${error.message}`);
     process.exit(2);
   }
 };
 
-const topicTypes = new Map(QUIZ_TOPICS.map((t) => [t.folder, t.type]));
-
-// public/<topic>/<code>/info.json  or  public/vocabulary/<category>/<code>/info.json
-const classify = (file) => {
-  const parts = file.split('/');
-  if (parts[0] !== 'public') return null;
-  if (parts[1] === 'vocabulary' && parts.length === 5 && parts[4] === 'info.json') {
-    return { type: 'vocabulary', section: `vocabulary/${parts[2]}`, code: parts[3] };
+const currentBranch = () => {
+  if (process.env.HEAD_REF) return process.env.HEAD_REF;
+  try {
+    return git('rev-parse', '--abbrev-ref', 'HEAD');
+  } catch {
+    return '';
   }
-  if (topicTypes.has(parts[1]) && parts.length === 4 && parts[3] === 'info.json') {
-    return { type: topicTypes.get(parts[1]), section: parts[1], code: parts[2] };
-  }
-  return null;
 };
 
-const files = changedFiles();
-const contentFiles = files.map((f) => ({ file: f, ...classify(f) })).filter((f) => f.type);
-const codeFiles = files.filter((f) => !f.startsWith('public/'));
-const problems = [];
-const rows = [];
-
-// index.json files are generated (src/validation/contentIndex.js); a PR
-// must not add or edit them, or students would conflict with each other again.
-files
-  .filter((f) => f.startsWith('public/') && f.endsWith('/index.json'))
-  .forEach((file) =>
-    problems.push({ file, errors: ['delete this file: index.json is generated automatically from the folders'] }),
-  );
-
-for (const { file, type, section, code } of contentFiles) {
-  const errors = [];
-  const contentType = getContentType(type);
-  const sectionDir = path.join(REPO_ROOT, 'public', section);
-  if (!isValidStudentCode(code)) errors.push(`folder "${code}" must be your student code (1234567-1234)`);
-
-
-  const info = readJson(path.join(REPO_ROOT, file));
-  if (info.error) {
-    errors.push(info.error);
-  } else {
-    errors.push(...contentType.validate(info.data, { strict: true }));
-
-    if (type !== 'vocabulary') {
-      const others = listSubfolders(sectionDir)
-        .filter((f) => f !== code)
-        .map((f) => ({ studentCode: f, info: readJson(path.join(sectionDir, f, 'info.json')).data }))
-        .filter((e) => e.info);
-      errors.push(...findCrossDuplicates([...others, { studentCode: code, info: info.data }], contentType)
-        .filter((e) => e.includes(`from ${code} `)));
-    }
-
-    const user = info.data.user || {};
-    const social = resolveSocialProfile(user.socialNetwork, user.socialLink);
-    rows.push({
-      name: user.username || '?',
-      code,
-      section,
-      social: `${social.label} @${social.handle}`,
-      items: `${contentType.listItems(info.data).length} ${contentType.itemName}`,
-      ok: errors.length === 0,
-    });
-  }
-  if (errors.length) problems.push({ file, errors });
-}
-
-// ---- report ---------------------------------------------------------------
-const cell = (value) => String(value).replace(/[|\n\r]/g, ' ');
-const lines = ['## 🐱 Contribution check', ''];
-if (contentFiles.length === 0) {
-  lines.push('No student content files (`public/**/info.json`) changed in this PR.');
-} else {
-  lines.push('| Student | Code | Section | Favorite network | Items | Status |', '|---|---|---|---|---|---|');
-  rows.forEach((r) =>
-    lines.push(`| ${cell(r.name)} | \`${cell(r.code)}\` | ${r.section} | ${cell(r.social)} | ${r.items} | ${r.ok ? '✅' : '❌'} |`),
-  );
-}
-if (codeFiles.length) {
-  lines.push('', `### Code changes (${codeFiles.length} files)`, '', ...codeFiles.map((f) => `- \`${f}\``));
-}
-if (problems.length) {
-  lines.push('', '### ❌ Problems to fix', '');
-  problems.forEach(({ file, errors }) => {
-    lines.push(`**\`${file}\`**`, ...errors.map((e) => `- ${e}`), '');
-  });
-}
-
-const report = lines.join('\n');
+const result = checkContribution(changedFiles(), { branch: currentBranch() });
+const report = buildReport(result);
 console.log(report);
 if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${report}\n`);
-process.exit(problems.length ? 1 : 0);
+process.exit(result.problems.length ? 1 : 0);
