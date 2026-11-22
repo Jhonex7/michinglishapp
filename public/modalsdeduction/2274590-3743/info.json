@@ -14,9 +14,9 @@
             "must",
             "might",
             "can't",
-            "can't have"
+            "did"
           ],
-          "answer": "can't have"
+          "answer": "can't"
         },
         {
           "question": "Which sentence expresses a logical conclusion about the present?",
@@ -63,10 +63,10 @@
           "options": [
             "might",
             "must",
-            "should",
-            "must have"
+            "did",
+            "can't"
           ],
-          "answer": "must have"
+          "answer": "must"
         },
         {
           "question": "Which sentence shows a deduction about the past that is probably not true?",
@@ -101,12 +101,12 @@
         {
           "question": "Complete the sentence: 'He _____ have told you if he knew.'",
           "options": [
-            "might",
+            "will",
             "can't",
             "must",
             "would"
           ],
-          "answer": "might"
+          "answer": "would"
         },
         {
           "question": "Which sentence expresses a certain conclusion about something that happened?",

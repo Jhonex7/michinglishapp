@@ -9,12 +9,12 @@
       "topic": "grammar",
       "questions": [
         {
-          "question": "What is the past of 'see''?",
+          "question": "What is the past of 'see'?",
           "options": ["sew", "seed", "saw", "sea"],
           "answer": "saw"
         },
         {
-          "question": "Which sentence is not correct?",
+          "question": "Which sentence is correct?",
           "options": [
             "I screamed when you scream since they screamed for ice cream.",
             "I screamed when you screamed because they screamed for ice cream.",

@@ -18,7 +18,7 @@
           "options": [
             "I bought apples oranges and bananas.",
             "I bought apples, oranges, and bananas.",
-            " I bought apples, oranges and bananas.",
+            "I bought apples, oranges and bananas.",
             "I bought apples oranges, and bananas."
           ],
           "answer": "I bought apples, oranges, and bananas."

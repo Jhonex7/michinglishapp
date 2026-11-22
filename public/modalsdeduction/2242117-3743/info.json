@@ -24,9 +24,9 @@
             "must",
             "might",
             "can't",
-            "can't have"
+            "did"
           ],
-          "answer": "can't have"
+          "answer": "can't"
         },
         {
           "question": "Which sentence expresses an uncertain possibility about the present?",
@@ -153,10 +153,10 @@
           "options": [
             "must",
             "might",
-            "must have",
-            "can't have"
+            "did",
+            "can't"
           ],
-          "answer": "must have"
+          "answer": "must"
         }
       ]
     }

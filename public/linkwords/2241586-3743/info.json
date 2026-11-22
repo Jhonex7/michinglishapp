@@ -11,12 +11,12 @@
           {
             "question": "I missed the bus; _____, I had to walk to school.",
             "options": [
-              "nevertheless",
+              "as a result",
               "for instance",
               "in addition",
               "even so"
             ],
-            "answer": "nevertheless"
+            "answer": "as a result"
           },
           {
             "question": "You should double-check your answers, _____ you might make unnecessary mistakes.",

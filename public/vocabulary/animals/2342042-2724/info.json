@@ -6,7 +6,7 @@
   },
   "words": [
     { "id": 1, "en": "giraffe", "es": "jirafa" },
-    { "id": 2, "en": "fish", "es": "pescado" },
+    { "id": 2, "en": "fish", "es": "pez" },
     { "id": 3, "en": "owl", "es": "búho" },
     { "id": 4, "en": "crocodile", "es": "cocodrilo" }
   ]
