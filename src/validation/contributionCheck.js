@@ -282,3 +282,28 @@ export const buildReport = ({ problems, warnings, rows, codeFiles }) => {
   }
   return lines.join('\n');
 };
+
+/**
+ * Adds grammar hints (Harper) as WARNINGS for the student files of a PR.
+ * Only texts that are new or changed in the PR are checked. Never blocks.
+ * Returns false when harper.js is not available.
+ */
+export const addGrammarWarnings = async (result, changes, { repoRoot = REPO_ROOT, readBase = () => null, linter } = {}) => {
+  const { grammarWarnings } = await import('./grammarCheck.js');
+  for (const { status, file } of changes) {
+    if (status === 'D') continue;
+    const info = classifyFile(file);
+    if (info.kind !== 'content') continue;
+    const current = readJson(path.join(repoRoot, file));
+    if (!current.data) continue;
+    const base = status === 'M' ? parseInfoText(readBase(file) || '') : null;
+    const lines = await grammarWarnings(info.type, current.data, { baseInfo: base?.data, linter });
+    if (lines === null) return false;
+    lines.forEach((line) => {
+      const existing = result.warnings.find((w) => w.file === file);
+      if (existing) existing.errors.push(line);
+      else result.warnings.push({ file, errors: [line] });
+    });
+  }
+  return true;
+};

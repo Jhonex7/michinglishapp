@@ -14,7 +14,12 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import { REPO_ROOT } from '../src/validation/contentFiles.js';
-import { buildReport, checkContribution, parseNameStatus } from '../src/validation/contributionCheck.js';
+import {
+  addGrammarWarnings,
+  buildReport,
+  checkContribution,
+  parseNameStatus,
+} from '../src/validation/contributionCheck.js';
 
 const args = process.argv.slice(2);
 const argValue = (name) => {
@@ -65,7 +70,12 @@ const readBase = (file) => {
   }
 };
 
-const result = checkContribution(changedFiles(), { branch: currentBranch(), readBase });
+const changes = changedFiles();
+const result = checkContribution(changes, { branch: currentBranch(), readBase });
+// Grammar hints (Harper, offline): warnings only, they never block the PR.
+if (!(await addGrammarWarnings(result, changes, { readBase }))) {
+  console.log('(grammar hints skipped: run "npm install" to enable them)\n');
+}
 const report = buildReport(result);
 console.log(report);
 if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${report}\n`);

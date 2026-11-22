@@ -14,7 +14,8 @@
     "test:coverage": "vitest run --coverage",
     "check:contribution": "node scripts/check-contribution.mjs",
     "contribute": "node scripts/new-contribution.mjs",
-    "ci": "npm run lint && npm run test && npm run build"
+    "ci": "npm run lint && npm run test && npm run build",
+    "check:grammar": "node scripts/check-grammar.mjs"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
@@ -43,6 +44,7 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.12",
     "globals": "^15.9.0",
+    "harper.js": "3.0.0",
     "jsdom": "^25.0.1",
     "vite": "^5.4.8",
     "vite-plugin-pwa": "^0.21.0",
