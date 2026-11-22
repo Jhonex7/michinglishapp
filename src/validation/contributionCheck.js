@@ -20,6 +20,7 @@ import {
   validateTopicNames,
 } from './contentRules.js';
 import { REPO_ROOT, listSubfolders, readJson } from './contentFiles.js';
+import { parseInfoText } from './jsonText.js';
 
 const TOPIC_BY_FOLDER = new Map(QUIZ_TOPICS.map((t) => [t.folder, t]));
 
@@ -129,20 +130,37 @@ const readOtherQuizTopics = (publicDir, exceptFolder) =>
     readSection(path.join(publicDir, t.folder)).map((e) => ({ ...e, studentCode: `${e.studentCode} (${t.folder})` })),
   );
 
-/** Validates one changed info.json with strict rules. Returns { errors, row }. */
-export const checkContentFile = ({ file, type, section, code, topic }, { repoRoot = REPO_ROOT } = {}) => {
+/** The strict rules that only look at the file itself. */
+const fileErrors = (text, info, contentType, topic) => [
+  ...validateNoDuplicateKeys(text),
+  ...contentType.validate(info, { strict: true }),
+  ...validateTopicNames(info, topic),
+];
+
+/**
+ * Validates one changed info.json with strict rules. Returns
+ * { errors, preexisting, row }.
+ *
+ * baseText: the file before the PR (for modified files). Problems that were
+ * already there are returned in `preexisting` instead of `errors`, so fixing
+ * one thing in an old file (for example a typo) does not force the editor to
+ * fix everything else in it. New problems still block the PR.
+ */
+export const checkContentFile = ({ file, type, section, code, topic }, { repoRoot = REPO_ROOT, baseText } = {}) => {
   const publicDir = path.join(repoRoot, 'public');
   const errors = [];
   const contentType = getContentType(type);
   if (!isValidStudentCode(code)) errors.push(`folder "${code}" must be your student code (1234567-1234)`);
 
   const result = readJson(path.join(repoRoot, file));
-  if (result.error) return { errors: [...errors, result.error], row: null };
+  if (result.error) return { errors: [...errors, result.error], preexisting: [], row: null };
   const info = result.data;
 
-  errors.push(...validateNoDuplicateKeys(result.text));
-  errors.push(...contentType.validate(info, { strict: true }));
-  errors.push(...validateTopicNames(info, topic));
+  const before = typeof baseText === 'string' ? parseInfoText(baseText) : null;
+  const old = before?.data ? new Set(fileErrors(before.text, before.data, contentType, topic)) : new Set();
+  const own = fileErrors(result.text, info, contentType, topic);
+  const preexisting = own.filter((e) => old.has(e));
+  errors.push(...own.filter((e) => !old.has(e)));
 
   // Copies inside the same section (questions, sentences, whole puzzles).
   const sectionDir = path.join(publicDir, section);
@@ -172,14 +190,14 @@ export const checkContentFile = ({ file, type, section, code, topic }, { repoRoo
     items: `${contentType.listItems(info).length} ${contentType.itemName}`,
     ok: errors.length === 0,
   };
-  return { errors, row };
+  return { errors, preexisting, row };
 };
 
 /**
  * changes: [{ status: 'A'|'M'|'D'|'R'|'C', file, from? }]
  * branch:  the PR branch (used to warn when a PR touches another student's folder)
  */
-export const checkContribution = (changes, { repoRoot = REPO_ROOT, branch = '' } = {}) => {
+export const checkContribution = (changes, { repoRoot = REPO_ROOT, branch = '', readBase = () => null } = {}) => {
   const problems = [];
   const warnings = [];
   const rows = [];
@@ -216,9 +234,11 @@ export const checkContribution = (changes, { repoRoot = REPO_ROOT, branch = '' }
       add(problems, file, `wrong place: ${info.reason}. Expected something like ${info.suggestion}`);
     } else if (info.kind === 'content') {
       touchedCodes.add(info.code);
-      const { errors, row } = checkContentFile({ file, ...info }, { repoRoot });
+      const baseText = status === 'M' ? readBase(file) : null;
+      const { errors, preexisting, row } = checkContentFile({ file, ...info }, { repoRoot, baseText });
       if (row) rows.push(row);
       errors.forEach((e) => add(problems, file, e));
+      preexisting.forEach((e) => add(warnings, file, `already there before this PR (please fix when you can): ${e}`));
     }
   });
 

@@ -22,11 +22,11 @@
           "question": "Complete the sentence: 'She looks tired. She _____ have stayed up all night.'",
           "options": [
             "might",
-            "could",
-            "must",
-            "might have"
+            "did",
+            "is",
+            "can"
           ],
-          "answer": "might have"
+          "answer": "might"
         },
         {
           "question": "Which of these implies a possible explanation for something?",

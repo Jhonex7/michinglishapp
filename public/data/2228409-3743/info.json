@@ -25,8 +25,8 @@
         "questions": [
           {
             "question": "What is the opposite of 'difficult'?",
-            "options": ["hard", "tricky", "simple ", "complex"],
-            "answer": "simple "
+            "options": ["hard", "tricky", "simple", "complex"],
+            "answer": "simple"
           },
           {
             "question": "Which word is a synonym for 'slow'?",

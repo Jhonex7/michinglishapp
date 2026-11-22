@@ -10,8 +10,8 @@
       "questions": [
         {
           "question": "Choose the best option: 'The ground is wet. It _____ have rained last night.'",
-          "options": ["must", "can't", "must have", "might"],
-          "answer": "must have"
+          "options": ["must", "can't", "did", "might"],
+          "answer": "must"
         },
         {
           "question": "Complete the sentence with the best deduction: 'She _____ be home already. Her car isn’t in the driveway.'",

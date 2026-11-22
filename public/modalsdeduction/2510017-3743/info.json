@@ -40,8 +40,8 @@
           },
           {
             "question": "Complete the sentence: 'They _____ have taken a different route. They’re very late.'",
-            "options": ["must", "can't", "must have", "should have"],
-            "answer": "must have"
+            "options": ["must", "can't", "did", "is"],
+            "answer": "must"
           },
           {
             "question": "Which of the following expresses a negative deduction in the past?",
@@ -100,8 +100,8 @@
           },
           {
             "question": "Complete the sentence: 'I didn’t hear the doorbell. They _____ have come in quietly.'",
-            "options": ["must", "must have", "might", "can't have"],
-            "answer": "must have"
+            "options": ["must", "did", "might", "can't"],
+            "answer": "must"
           },
           {
             "question": "Which sentence shows a likely incorrect assumption about the past?",

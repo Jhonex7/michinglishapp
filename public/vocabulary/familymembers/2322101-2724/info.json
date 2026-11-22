@@ -5,8 +5,8 @@
     "socialLink": "@laurace"
   },
   "words": [
-    { "id": 1, "en": "mother in law", "es": "suegra" },
-    { "id": 2, "en": "father in law", "es": "suegro" },
+    { "id": 1, "en": "mother-in-law", "es": "suegra" },
+    { "id": 2, "en": "father-in-law", "es": "suegro" },
     { "id": 3, "en": "nephew", "es": "sobrino" },
     { "id": 4, "en": "niece", "es": "sobrina" }
   ]

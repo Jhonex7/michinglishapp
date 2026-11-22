@@ -19,7 +19,7 @@
           "answer": "had"
         },
         {
-          "question": "In the phrase 'The cat is sleeping', what is the gerund form of the verb?",
+          "question": "In the phrase 'The cat is sleeping', what is the present participle of the verb?",
           "options": ["is", "sleeping", "the", "cat"],
           "answer": "sleeping"
         },
@@ -54,9 +54,9 @@
           "answer": "present perfect"
         },
         {
-          "question": "The verb 'to love' belongs to the...",
-          "options": ["first conjugation", "second conjugation", "third conjugation", "fourth conjugation"],
-          "answer": "first conjugation"
+          "question": "What is the past tense of the verb 'to love'?",
+          "options": ["loved", "lovd", "loving", "lovered"],
+          "answer": "loved"
         },
         {
           "question": "Which of the following verbs is impersonal?",

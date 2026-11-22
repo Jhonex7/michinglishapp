@@ -24,6 +24,8 @@ const argValue = (name) => {
 
 const git = (...gitArgs) => execFileSync('git', gitArgs, { cwd: REPO_ROOT, encoding: 'utf8' }).trim();
 
+const baseRef = () => argValue('--base') || process.env.BASE_REF || 'origin/develop';
+
 const changedFiles = () => {
   const explicit = argValue('--files');
   if (explicit) {
@@ -33,7 +35,7 @@ const changedFiles = () => {
       .filter(Boolean)
       .map((file) => ({ status: 'A', file }));
   }
-  const base = argValue('--base') || process.env.BASE_REF || 'origin/develop';
+  const base = baseRef();
   try {
     return parseNameStatus(git('diff', '--name-status', '-M', `${base}...HEAD`));
   } catch (error) {
@@ -51,7 +53,19 @@ const currentBranch = () => {
   }
 };
 
-const result = checkContribution(changedFiles(), { branch: currentBranch() });
+// The version of a file before this PR (merge base), to tell new problems
+// from old ones. Not available with --files.
+const readBase = (file) => {
+  if (argValue('--files')) return null;
+  try {
+    const mergeBase = git('merge-base', baseRef(), 'HEAD');
+    return execFileSync('git', ['show', `${mergeBase}:${file}`], { cwd: REPO_ROOT, encoding: 'utf8' });
+  } catch {
+    return null;
+  }
+};
+
+const result = checkContribution(changedFiles(), { branch: currentBranch(), readBase });
 const report = buildReport(result);
 console.log(report);
 if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${report}\n`);

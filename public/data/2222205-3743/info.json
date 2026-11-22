@@ -30,7 +30,7 @@
         "questions": [
           {
             "question": "What is the antonym of 'large'?",
-            "options": ["small", "little", "minimun", "complicated"],
+            "options": ["small", "little", "minimum", "complicated"],
             "answer": "small"
           },
           {

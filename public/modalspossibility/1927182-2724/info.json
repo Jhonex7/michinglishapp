@@ -21,12 +21,12 @@
         {
           "question": "Complete the sentence: 'She _____ have left her phone at the restaurant.'",
           "options": [
-            "must",
-            "could",
             "might",
-            "might have"
+            "did",
+            "is",
+            "can"
           ],
-          "answer": "might have"
+          "answer": "might"
         },
         {
           "question": "Which sentence expresses a possibility in the future?",
