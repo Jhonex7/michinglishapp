@@ -21,12 +21,12 @@
         {
           "question": "Complete the sentence: 'They _____ have missed the bus, that’s why they’re late.'",
           "options": [
-            "must",
-            "could",
             "might",
-            "might have"
+            "did",
+            "is",
+            "can"
           ],
-          "answer": "might have"
+          "answer": "might"
         },
         {
           "question": "Which sentence expresses a possibility in the future?",

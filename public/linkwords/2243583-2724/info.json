@@ -11,22 +11,22 @@
           {
             "question": "I’ll come with you _____ you need my help.",
             "options": [
-              "If", 
-              "Unless", 
-              "Whereas", 
-              "While"
+              "if", 
+              "unless", 
+              "whereas", 
+              "while"
             ],
-            "answer": "If"
+            "answer": "if"
           },
           {
             "question": "You must finish the report _____ you leave.",
             "options": [
-              "Before", 
-              "Whereas", 
-              "Nonetheless", 
-              "Such as"
+              "before", 
+              "whereas", 
+              "nonetheless", 
+              "such as"
             ],
-            "answer": "Before"
+            "answer": "before"
           },
           {
             "question": "_____ his reputation, he was not hired.",

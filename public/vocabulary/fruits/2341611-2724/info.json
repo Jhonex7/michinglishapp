@@ -6,8 +6,8 @@
   },
   "words": [
     { "id": 1, "en": "peach", "es": "durazno" },
-    { "id": 2, "en": "passion fruit", "es": "maracuya" },
-    { "id": 3, "en": "blueberry", "es": "arandano" },
+    { "id": 2, "en": "passion fruit", "es": "maracuyá" },
+    { "id": 3, "en": "blueberry", "es": "arándano" },
     { "id": 4, "en": "cherry", "es": "cereza" }
   ]
 }

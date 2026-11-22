@@ -11,12 +11,12 @@
             {
               "question": "He is very talented; _____, he is also extremely humble.",
               "options": [
-                "Nonetheless",
-                "Whereas",
-                "Furthermore",
-                "In case"
+                "nonetheless",
+                "whereas",
+                "furthermore",
+                "in case"
               ],
-              "answer": "Furthermore"
+              "answer": "furthermore"
             },
             {
               "question": "She loves traveling. _____, she has visited over 30 countries.",
@@ -91,42 +91,42 @@
             {
               "question": "She was tired; _____, she continued working until late.",
               "options": [
-                "Equally",
-                "Nonetheless",
-                "As a consequence",
-                "Supposing that"
+                "equally",
+                "nonetheless",
+                "as a consequence",
+                "supposing that"
               ],
-              "answer": "Nonetheless"
+              "answer": "nonetheless"
             },
             {
               "question": "It was raining heavily; _____, they decided to go hiking.",
               "options": [
-                "Even so",
-                "Not only ... but also",
-                "In case",
-                "As long as"
+                "even so",
+                "not only ... but also",
+                "in case",
+                "as long as"
               ],
-              "answer": "Even so"
+              "answer": "even so"
             },
             {
               "question": "He worked hard; _____, he achieved his goals.",
               "options": [
-                "Thus",
-                "What’s more",
-                "While",
-                "Equally"
+                "thus",
+                "what’s more",
+                "while",
+                "equally"
               ],
-              "answer": "Thus"
+              "answer": "thus"
             },
             {
               "question": "The company expanded rapidly; _____, its profits increased significantly.",
               "options": [
-                "Whereas",
-                "In addition",
-                "Provided that",
-                "Hence"
+                "whereas",
+                "in addition",
+                "provided that",
+                "hence"
               ],
-              "answer": "Hence"
+              "answer": "hence"
             },
             {
               "question": "He missed the deadline. _____, he faced criticism from his boss.",
@@ -169,7 +169,7 @@
               "answer": "Unless"
             },
             {
-              "question": "_____ the weather improves, we will cancel the picnic.",
+              "question": "_____ the weather improves, we will have the picnic.",
               "options": [
                 "Equally",
                 "Provided that",
@@ -199,7 +199,7 @@
               "answer": "In case"
             },
             {
-              "question": "_____ he agreed to help, we wouldn’t have finished on time.",
+              "question": "_____ he hadn't agreed to help, we wouldn’t have finished on time.",
               "options": [
                 "Conversely",
                 "Owing to",
@@ -221,22 +221,22 @@
             {
               "question": "She worked hard; _____, he managed to complete the project.",
               "options": [
-                "Likewise",
-                "Whereas",
-                "Nonetheless",
-                "As a result"
+                "likewise",
+                "whereas",
+                "nonetheless",
+                "as a result"
               ],
-              "answer": "Likewise"
+              "answer": "likewise"
             },
             {
               "question": "Both methods are effective. _____, they have their limitations.",
               "options": [
-                "Equally",
+                "Nonetheless",
                 "Provided that",
                 "Thus",
                 "Hence"
               ],
-              "answer": "Equally"
+              "answer": "Nonetheless"
             },
             {
               "question": "_____, the meeting was productive despite the challenges.",

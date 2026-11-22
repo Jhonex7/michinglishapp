@@ -21,12 +21,12 @@
           {
             "question": "She failed the exam. She _____ have studied enough.",
             "options": [
-              "must not",
+              "must",
               "can't",
-              "might",
-              "should"
+              "will",
+              "can"
             ],
-            "answer": "must not"
+            "answer": "can't"
           },
           {
             "question": "This package is addressed to someone else. It _____ be for me.",

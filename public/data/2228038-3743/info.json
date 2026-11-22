@@ -9,7 +9,7 @@
           "topic": "grammar",
           "questions": [
             {
-              "question": "What is the continous tense version of 'work'",
+              "question": "What is the continuous tense form of 'work'?",
               "options": ["works", "worked", "working", "wark"],
               "answer": "working"
             },
@@ -24,7 +24,7 @@
           "topic": "vocabulary",
           "questions": [
             {
-              "question": "What is an antonym of 'Perfect'?",
+              "question": "What is an antonym of 'perfect'?",
               "options": ["awful", "beautiful", "easy", "complicated"],
               "answer": "awful"
             },

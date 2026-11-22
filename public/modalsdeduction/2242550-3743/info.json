@@ -14,9 +14,9 @@
             "must",
             "might",
             "can't",
-            "must have"
+            "did"
           ],
-          "answer": "must have"
+          "answer": "must"
         },
         {
           "question": "Choose the correct modal: 'That ______ be his phone. He just put it in his bag.'",
@@ -54,9 +54,9 @@
             "must",
             "can't",
             "might",
-            "can't have"
+            "did"
           ],
-          "answer": "can't have"
+          "answer": "can't"
         },
         {
           "question": "Which modal expresses a strong conclusion about the present situation?",

@@ -12,21 +12,21 @@
             "question": "Complete the sentence: 'If it _____ tomorrow, we _____ to the beach.'",
             "options": [
               "rains / won't go",
-              "'will rain / don't go",
+              "will rain / don't go",
               "rain / go",
               "doesn't rain / goes"
             ],
             "answer": "rains / won't go"
           },
           {
-            "question": "Complete  the sentence: 'If the weather _____, we'll go for a walk.' ",
+            "question": "Complete the sentence: 'If the weather _____, we'll go for a walk.'",
             "options": [
-              "Improved",
-              "Will improve",
-              "Improving",
-              "Improves"
+              "improved",
+              "will improve",
+              "improving",
+              "improves"
             ],
-            "answer": "Improves"
+            "answer": "improves"
           },
           {
             "question": "Select the sentence that uses the first conditional correctly:",
@@ -39,7 +39,7 @@
             "answer": "If he sings 'moments', I'll cry."
           },
           {
-            "question": "Complete  the sentence: 'If she gets a job in Manchester, she _____ _____ to get up early.' ",
+            "question": "Complete the sentence: 'If she gets a job in Manchester, she _____ _____ to get up early.'",
             "options": [
               "would had",
               "could have had",

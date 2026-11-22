@@ -9,15 +9,15 @@
         "topic": "grammar",
         "questions": [
           {
-            "question": "Which of these is a verb",
+            "question": "Which of these is a verb?",
             "options": ["name", "my", "run", "hello"],
             "answer": "run"
           },
           {
-            "question": "Which sentence is not correct",
+            "question": "Which sentence is not correct?",
             "options": [
-              "She speaks english.",
-              "I like to drink coffe.",
+              "She speaks English.",
+              "I like to drink coffee.",
               "I'm practicing swimming.",
               "I does'nt like apples."
             ],
@@ -29,7 +29,7 @@
         "topic": "vocabulary",
         "questions": [
           {
-            "question": "How do you say 'caballo' in english?",
+            "question": "How do you say 'caballo' in English?",
             "options": ["horse", "chicken", "rat", "frog"],
             "answer": "horse"
           },

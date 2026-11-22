@@ -217,6 +217,35 @@ export const validateUser = (user, { strict = false } = {}) => {
   return errors;
 };
 
+// Words that can legitimately repeat: "If I had had time", "I know that that is true".
+const REPEATABLE_WORDS = ['had', 'that'];
+const edgeWord = (text, side) => {
+  const words = text.trim().split(/\s+/).filter(Boolean);
+  const word = side === 'last' ? words.at(-1) : words[0];
+  return word ? word.toLowerCase().replace(/^[^\p{L}\p{N}']+|[^\p{L}\p{N}']+$/gu, '') : '';
+};
+
+/**
+ * Fills the blank with the answer and looks for a word repeated around it,
+ * e.g. "It _____ have rained." + "must have" -> "must have have rained".
+ * Only for questions with a single blank (_____).
+ */
+export const findRepeatedWordAtBlank = (text, answer, label = 'question') => {
+  if (!isNonEmptyString(text) || !isNonEmptyString(answer)) return [];
+  const parts = text.split(/_+/);
+  if (parts.length !== 2) return [];
+  const [before, after] = parts;
+  const repeated = [
+    [edgeWord(before, 'last'), edgeWord(answer, 'first')],
+    [edgeWord(answer, 'last'), edgeWord(after, 'first')],
+  ].find(([x, y]) => x && x === y && !REPEATABLE_WORDS.includes(x));
+  if (!repeated) return [];
+  const filled = `${before}${answer.trim()}${after}`.replace(/\s+/g, ' ').trim();
+  return [
+    `${label}: with the answer the sentence reads "${filled}" ("${repeated[0]} ${repeated[0]}"). Remove "${repeated[0]}" from the answer or from the sentence`,
+  ];
+};
+
 export const validateQuestion = (question, label = 'question', { strict = false } = {}) => {
   const errors = [];
   if (!question || typeof question !== 'object') return [`${label}: must be an object`];
@@ -235,6 +264,7 @@ export const validateQuestion = (question, label = 'question', { strict = false 
 
   if (!isNonEmptyString(answer)) errors.push(`${label}: "answer" must be a non-empty string`);
   else if (!options.includes(answer)) errors.push(`${label}: "answer" must be exactly one of the options`);
+  else errors.push(...findRepeatedWordAtBlank(text, answer, label));
 
   if (strict) {
     [text, ...options].filter(isNonEmptyString).forEach((value) => {
